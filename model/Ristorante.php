@@ -11,17 +11,17 @@ class Ristorante{
     public string $telefono;
     public string $email;
     // Descrizioni
-    private string $decrizione_breve;
-    private string $decrizione_estesa;
+    public string $descrizione_breve;
+    public string $descrizione_estesa;
 
     // Informazioni fiscali
-    private string $codice_fiscale;
-    private string $partita_iva;
-    private string $ragione_sociale;
+    public string $codice_fiscale;
+    public string $partita_iva;
+    public string $ragione_sociale;
 
     // altre informazioni
-    private int $capienza;
-    private int $id_ristoratore;
+    public int $capienza;
+    public int $id_ristoratore;
 
     private int $id_citta;
 
@@ -31,32 +31,32 @@ class Ristorante{
 
     // Costruttore
 
-    public function __construct(int $ID_ristorante, string $nome, string $indirizzo, string $telefono, string $email){
+    // public function __construct(int $ID_ristorante, string $nome, string $indirizzo, string $telefono, string $email){
+    //     $this->ID_ristorante = $ID_ristorante;
+    //     $this->nome = $nome;
+    //     $this->indirizzo = $indirizzo;
+    //     $this->telefono = $telefono;
+    //     $this->email = $email;
+    // }
+
+    // Costruttore completo
+    public function __construct(int $ID_ristorante, string $nome, string $indirizzo, string $numero_civico, string $telefono, string $email,
+    string $descrizione_breve, string $descrizione_estesa, string $codice_fiscale, string $partita_iva, string $ragione_sociale,
+    int $capienza, int $id_ristoratore){
         $this->ID_ristorante = $ID_ristorante;
         $this->nome = $nome;
         $this->indirizzo = $indirizzo;
+        $this->numero_civico = $numero_civico;
         $this->telefono = $telefono;
         $this->email = $email;
+        $this->descrizione_breve = $descrizione_breve;
+        $this->descrizione_estesa = $descrizione_estesa;
+        $this->codice_fiscale = $codice_fiscale;
+        $this->partita_iva = $partita_iva;
+        $this->ragione_sociale = $ragione_sociale;
+        $this->capienza = $capienza;
+        $this->id_ristoratore = $id_ristoratore;
     }
-
-    // Costruttore completo
-    // public function __construct_full(int $id, string $nome, string $indirizzo, string $numero_civico, string $telefono, string $email,
-    // string $decrizione_breve, string $decrizione_estesa, string $codice_fiscale, string $partita_iva, string $ragione_sociale,
-    // int $capienza, int $id_ristoratore){
-    //     $this->id = $id;
-    //     $this->nome = $nome;
-    //     $this->indirizzo = $indirizzo;
-    //     $this->numero_civico = $numero_civico;
-    //     $this->telefono = $telefono;
-    //     $this->email = $email;
-    //     $this->decrizione_breve = $decrizione_breve;
-    //     $this->decrizione_estesa = $decrizione_estesa;
-    //     $this->codice_fiscale = $codice_fiscale;
-    //     $this->partita_iva = $partita_iva;
-    //     $this->ragione_sociale = $ragione_sociale;
-    //     $this->capienza = $capienza;
-    //     $this->id_ristoratore = $id_ristoratore;
-    // }
 
     // metodi set e get
 

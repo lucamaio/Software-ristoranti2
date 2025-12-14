@@ -22,4 +22,17 @@
         }
        
     }
+
+   function verificaData($dateString) {
+        // Converto la stringa in oggetto DateTime
+        $inputDate = new DateTime($dateString);
+        
+        // Data odierna senza orario
+        $today = new DateTime();
+        $today->setTime(0, 0, 0);
+        
+        // Confronto
+        return $inputDate > $today;
+    }
+
 ?>

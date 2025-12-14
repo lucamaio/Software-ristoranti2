@@ -15,7 +15,7 @@ switch($method){
         }else{
             $id = $_GET['id'];
             $stmt = mysqli_prepare($link,"SELECT * FROM $table WHERE ID_ristorante = ? ");
-            mysqli_stmt_bind_param($stmt,"d",$id);
+            mysqli_stmt_bind_param($stmt,"i",$id);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
         }

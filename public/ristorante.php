@@ -23,22 +23,26 @@
             color: #333333;
         }
         .hero-section {
-            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
-            padding: 50px 0;
+            position: relative;
+            height: 250px; /* Ridotta da 300px per renderla meno grande */
+            background: url('../ristorante.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-        }
-        .hero-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .restaurant-name {
             font-size: 2.5rem;
             font-weight: bold;
-            margin-top: 20px;
-            color: #007bff; /* Cambiato in blu */
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Per migliorare la leggibilità */
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
         }
         .section {
             padding: 40px 0;
@@ -89,8 +93,8 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         @media (max-width: 768px) {
-            .hero-image {
-                height: 200px;
+            .hero-section {
+                height: 150px; /* Ridotta da 200px per mobile */
             }
             .restaurant-name {
                 font-size: 2rem;
@@ -100,12 +104,6 @@
 </head>
 <body>
     <div class="container-fluid">
-        <!-- Freccia per tornare alla pagina index.php -->
-        <div class="d-flex justify-content-start mb-3">
-            <a href="index.php" class="btn btn-outline-secondary btn-modern">
-                <i class="bi bi-arrow-left"></i> Torna alla Home
-            </a>
-        </div>
         <div class="" id="ristoranti-data"></div>
     </div>
 
@@ -139,18 +137,19 @@
 
                 container.innerHTML = `
                     <div class="hero-section">
-                        <div class="container">
-                            <img src="../ristorante.png" alt="Immagine del ristorante" class="hero-image">
-                            <h1 class="restaurant-name">${result.nome}</h1>
-                            <div class="mt-3">
-                                <button class="btn btn-primary btn-modern me-2" onclick="window.location.href='menu.php?id=' + ${id};">
-                                    <i class="bi bi-menu-button-wide"></i> Menù
-                                </button>
-                                <button class="btn btn-success btn-modern"><i class="bi bi-calendar-check"></i> Prenota</button>
-                            </div>
-                        </div>
+                        <a href="index.php" class="btn btn-dark btn-modern back-button"> <!-- Cambiato a btn-dark per colore scuro -->
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                        <h1 class="restaurant-name">${result.nome}</h1>
                     </div>
                     <div class="container section">
+                        <!-- Pulsanti Menù e Prenota spostati qui per una posizione più ottimale -->
+                        <div class="d-flex justify-content-center mb-4">
+                            <button class="btn btn-primary btn-modern me-2" onclick="window.location.href='menu.php?id=' + ${id};">
+                                <i class="bi bi-menu-button-wide"></i> Menù
+                            </button>
+                            <button class="btn btn-success btn-modern"><i class="bi bi-calendar-check"></i> Prenota</button>
+                        </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="info-card">
@@ -185,7 +184,7 @@
                                         <strong>Partita IVA:</strong> ${result.partita_iva}
                                     </div>
                                      <div class="info-item">
-                                        <i class="bi bi-receipt info-icon"></i>
+                                        <i class="bi bi-building info-icon"></i> <!-- Cambiata icona da bi-receipt a bi-building per la ragione sociale -->
                                         <strong>Ragione Sociale:</strong> ${result.ragione_sociale}
                                     </div>
                                 </div>

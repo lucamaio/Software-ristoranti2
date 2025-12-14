@@ -48,12 +48,22 @@ switch($richiesta){
                 $row = mysqli_fetch_assoc($result);
 
                 if(password_verify($password, $row['password'])){
+                    $durata_sessione = 15 * 60; // 15 minuti
+
+                    session_set_cookie_params([
+                        'lifetime' => $durata_sessione,
+                        'path'     => '/',
+                        'secure'   => false, // true se HTTPS
+                        'httponly' => true,
+                        'samesite' => 'Lax'
+                    ]);
 
                     // Avvio la sessione e salvo l'ID dell'utente
                     session_start();
                     $_SESSION['user_id'] = $row[$ids[$i]];
                     $_SESSION['role'] = $rules[$i];
                     $_SESSION['email'] = $row['email'];
+                    
                     // Password corretta, login riuscito
                     echo json_encode(['success' => true, 'message' => 'Login riuscito']);
                     exit;

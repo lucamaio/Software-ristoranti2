@@ -1,7 +1,7 @@
 <?php
 class Piatto{
     // Informazioni principali
-    public int $id;
+    public int $ID_piatto;
     public string $nome;
     public string $descrizione;
     public float $prezzo;
@@ -14,8 +14,8 @@ class Piatto{
     public ?int $ID_ristoratore;
     public ?int $ID_cuoco;
 
-    public function __construct(int $id, string $nome, string $descrizione, float $prezzo, int $ID_ristorante, int $ID_stato_piatto, int $ID_tipologia_piatto, ?int $ID_ristoratore, ?int $ID_cuoco){
-        $this->id = $id; 
+    public function __construct(int $ID_piatto, string $nome, string $descrizione, float $prezzo, int $ID_ristorante, int $ID_stato_piatto, int $ID_tipologia_piatto, ?int $ID_ristoratore, ?int $ID_cuoco){
+        $this->ID_piatto = $ID_piatto; 
         $this->nome = $nome;
         $this->descrizione = $descrizione;
         $this->prezzo = $prezzo;

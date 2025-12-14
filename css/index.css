@@ -1,0 +1,178 @@
+ body {
+     background-color: #ffffff;
+     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+     color: #333333;
+ }
+
+ .hero-section {
+    /*background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);*/
+    /* padding: 50px 0; */
+    text-align: center;
+    align-items: center;
+ }
+
+ .hero-title {
+     font-size: 3rem;
+     font-weight: bold;
+     color: #007bff;
+     margin-bottom: 20px;
+ }
+
+ .hero-description {
+     font-size: 1.2rem;
+     line-height: 1.6;
+     color: #555;
+     max-width: 800px;
+     margin: 0 auto;
+ }
+
+ .btn-modern {
+     border-radius: 25px;
+     padding: 10px 20px;
+     font-weight: bold;
+     transition: all 0.3s ease;
+ }
+
+ .btn-modern:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ }
+
+ .restaurant-card {
+     background-color: #f9f9f9;
+     border: 1px solid #e0e0e0;
+     border-radius: 10px;
+     padding: 20px;
+     margin-bottom: 20px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+     transition: transform 0.3s ease;
+     width: 18rem;
+ }
+
+ .restaurant-card:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ .restaurant-card a {
+     text-decoration: none;
+     color: inherit;
+ }
+
+ .restaurant-card .card-title {
+     color: #007bff;
+     font-weight: bold;
+ }
+
+ .restaurant-card .card-text {
+     line-height: 1.5;
+ }
+
+ .restaurant-image {
+     width: 100%;
+     height: 150px;
+     object-fit: cover;
+     border-radius: 10px;
+     margin-bottom: 15px;
+ }
+
+ @media (max-width: 768px) {
+     .hero-title {
+         font-size: 2rem;
+     }
+
+     .hero-description {
+         font-size: 1rem;
+     }
+
+     .restaurant-card {
+         width: 100%;
+     }
+ }
+
+ /* Contenitore del messaggio */
+#message {
+    position: fixed;       /* Fisso nella finestra */
+    top: 20px;             /* Distanza dall’alto */
+    right: 20px;           /* Distanza dal lato destro */
+    min-width: 250px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    display: none;          /* Invisibile inizialmente */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Messaggio di successo */
+#message.success {
+    background-color: #28a745; /* Verde */
+}
+
+/* Messaggio di errore */
+#message.error {
+    background-color: #dc3545; /* Rosso */
+}
+
+/* Animazione di comparsa */
+#message.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animazione di sparizione */
+#message.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Pulsante Home fisso in alto a sinistra */
+#btn-home {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* Assicura che stia sopra altri elementi */
+}
+
+.back-button {
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    background: linear-gradient(45deg, #2c3e50, #34495e);
+}
+
+.back-button i {
+    margin-right: 5px; /* Spazio tra icona e testo (se aggiunto) */
+}
+
+/* Responsive: su mobile, riduci leggermente la posizione e la dimensione */
+@media (max-width: 768px) {
+    #btn-home {
+        top: 10px;
+        left: 10px;
+    }
+    
+    .back-button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+}

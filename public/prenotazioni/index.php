@@ -36,12 +36,17 @@
     
     if(!isset($_SESSION['user_id'])){
         message("Devi accedere per poter visualizzare questa pagina");
-    }?>
+    }
+    if($_SESSION['role'] === 'chef'){
+        message("Accesso negato!");
+    }
+    
+    ?>
     <div id="btn-home"></div>
     
     <h1 class="mb-4">Elenco Prenotazioni</h1>
     <button id="btn-prenota" class="btn btn-secondary btn-modern mb-4">Nuova Prenotazione</button>
-    <div id="message" class="mb-2"></div>
+    <div id="message" class="mb-4"></div>
     <div id="table-responsive" class="table-responsive"></div>    
 </body>
 </html>

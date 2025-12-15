@@ -33,7 +33,8 @@ switch($method){
                     LEFT JOIN tavoli t ON p.ID_tavolo = t.ID_tavolo  
                     LEFT JOIN stati_prenotazioni sp ON p.ID_stato_prenotazione = sp.ID_stato_prenotazione
                     LEFT JOIN clienti c ON p.ID_cliente = c.ID_cliente
-                    WHERE p.ID_cliente = ?"; 
+                    WHERE p.ID_cliente = ?
+                    ORDER BY p.data_prenotazione DESC"; 
 
                     $stmt = mysqli_prepare($link, $query);
                     mysqli_stmt_bind_param($stmt, "i", $user_id);
@@ -49,21 +50,40 @@ switch($method){
                     echo json_encode($prenotazioni);
                     exit;
                 case 'restaurant':
-                    $stmt = mysqli_prepare($link, "SELECT p.* FROM `$table` p LEFT JOIN ristoranti r ON p.ID_ristorante = r.ID_ristorante WHERE r.ID_ristoratore = ?");
+                    $query = "SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
+                    FROM `$table` p 
+                    LEFT JOIN ristoranti r ON  p.ID_ristorante = r.ID_ristorante
+                    LEFT JOIN tavoli t ON p.ID_tavolo = t.ID_tavolo  
+                    LEFT JOIN stati_prenotazioni sp ON p.ID_stato_prenotazione = sp.ID_stato_prenotazione
+                    LEFT JOIN clienti c ON p.ID_cliente = c.ID_cliente
+                    WHERE r.ID_ristoratore = ?
+                    ORDER BY p.data_prenotazione DESC
+                    "; 
+                    // $stmt = mysqli_prepare($link, "SELECT p.* FROM `$table` p LEFT JOIN ristoranti r ON p.ID_ristorante = r.ID_ristorante WHERE r.ID_ristoratore = ?");
+                    $stmt = mysqli_prepare($link, $query);
                     mysqli_stmt_bind_param($stmt, "i", $user_id);
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
                     $prenotazioni = [];
                     while($row = mysqli_fetch_assoc($result)){
-                        $prenotazioni[] = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
+                        $prenotazione = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
+                        $prenotazioni[] = new PrenotazioniTable($prenotazione, $row['nome_ristorante'], $row['cognome_cliente']. " ".$row['nome_cliente'], $row['numero_tavolo'], $row['nome_stato']);
                     }
                     echo json_encode($prenotazioni);
                     exit;
                 case 'admin':
-                    $result = mysqli_query($link, "SELECT * FROM $table WHERE");
+                    $query = "SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
+                    FROM `$table` p 
+                    LEFT JOIN ristoranti r ON  p.ID_ristorante = r.ID_ristorante
+                    LEFT JOIN tavoli t ON p.ID_tavolo = t.ID_tavolo  
+                    LEFT JOIN stati_prenotazioni sp ON p.ID_stato_prenotazione = sp.ID_stato_prenotazione
+                    LEFT JOIN clienti c ON p.ID_cliente = c.ID_cliente
+                    "; 
+                    $result = mysqli_query($link, $query);
                     $prenotazioni = [];
                     while($row = mysqli_fetch_assoc($result)){
-                        $prenotazioni[] = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
+                        $prenotazione = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
+                        $prenotazioni[] = new PrenotazioniTable($prenotazione, $row['nome_ristorante'], $row['cognome_cliente']. " ".$row['nome_cliente'], $row['numero_tavolo'], $row['nome_stato']);
                     }
                     echo json_encode($prenotazioni);
                     exit;
@@ -151,6 +171,38 @@ switch($method){
 
                 cancellaPrenotazione($link, $id_prenotazione);
                 break;
+            case 'accetta':
+                if($role !== 'restaurant'){
+                    http_response_code(405);
+                    echo json_encode(['success' => false, 'error' => 'Accesso Negato!']);
+                    exit;
+                }
+
+                $id_prenotazione = $_POST['ID_prenotazione'];
+
+                if(!$id_prenotazione){
+                    http_response_code(405);
+                    echo json_encode(['success' => false, 'error' => 'Dati Mancanti!']);
+                    exit;
+                }
+                accettaPrenotazione($link, $id_prenotazione);
+                break;
+            case 'declina':
+                if($role !== 'restaurant'){
+                    http_response_code(405);
+                    echo json_encode(['success' => false, 'error' => 'Accesso Negato!']);
+                    exit;
+                }
+
+                $id_prenotazione = $_POST['ID_prenotazione'];
+
+                if(!$id_prenotazione){
+                    http_response_code(405);
+                    echo json_encode(['success' => false, 'error' => 'Dati Mancanti!']);
+                    exit;
+                }
+                declinaPrenotazione($link, $id_prenotazione);
+                break;
             default:
                 http_response_code(405);
                 echo json_encode(['success' => false, 'error' => 'Metodo non consentito']);
@@ -163,6 +215,8 @@ switch($method){
         echo json_encode(['success' => false, 'error' => 'Metodo non consentito']);
         break;
 }
+
+// Funzione che crea una nuova prenotazione
 
 function nuovaPrenotazione($link, $id_ristorante, $data, $ora, $persone, $user_id){
     $stmt = mysqli_prepare(
@@ -198,6 +252,8 @@ function nuovaPrenotazione($link, $id_ristorante, $data, $ora, $persone, $user_i
 
     mysqli_stmt_close($stmt);
 }
+
+// Funzioni che aggiornano lo stato di una prenotazione
 
 function aggiornaPrenotazione($link, $id_prenotazione, $data, $ora, $persone){
     $stmt = mysqli_prepare($link, "SELECT data_prenotazione, ora_prenotazione, persone FROM prenotazioni WHERE ID_prenotazione = ?");
@@ -265,6 +321,47 @@ function cancellaPrenotazione($link, $id_prenotazione){
     mysqli_stmt_close($stmt);
 }
 
+function accettaPrenotazione($link, $id_prenotazione){
+    $stato = 2; // Stato confermato
+    $stmt = mysqli_prepare($link,"UPDATE prenotazioni SET ID_stato_prenotazione = ? WHERE ID_prenotazione = ?");
+    mysqli_stmt_bind_param($stmt, "ii", $stato, $id_prenotazione);
+    
+    if(!mysqli_stmt_execute($stmt)){
+        echo json_encode([
+            'success'=>false,
+            'error'=>'Errore nell\'esecuzione della query: '.mysqli_stmt_error($stmt)
+        ]);
+        exit;
+    }
+
+    echo json_encode([
+        'success'=>true,
+        'message'=>'Prenotazione confermata con successo!'
+    ]);
+
+    mysqli_stmt_close($stmt);
+}
+
+function declinaPrenotazione($link, $id_prenotazione){
+    $stato = 7; // Stato Rifiutata
+    $stmt = mysqli_prepare($link,"UPDATE prenotazioni SET ID_stato_prenotazione = ? WHERE ID_prenotazione = ?");
+    mysqli_stmt_bind_param($stmt, "ii", $stato, $id_prenotazione);
+    
+    if(!mysqli_stmt_execute($stmt)){
+        echo json_encode([
+            'success'=>false,
+            'error'=>'Errore nell\'esecuzione della query: '.mysqli_stmt_error($stmt)
+        ]);
+        exit;
+    }
+
+    echo json_encode([
+        'success'=>true,
+        'message'=>'Prenotazione rifiutata con successo!'
+    ]);
+
+    mysqli_stmt_close($stmt);
+}
 
 mysqli_close($link);
 

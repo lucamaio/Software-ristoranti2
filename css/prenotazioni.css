@@ -239,7 +239,7 @@ h1, h2 {
 }
 
 /* Pulsanti azioni */
-.btn-edit, .btn-cancel {
+.btn-edit, .btn-cancel, .btn-accept, .btn-decline {
     border-radius: 50%;
     width: 35px;
     height: 35px;
@@ -251,7 +251,7 @@ h1, h2 {
 }
 
 @media (max-width: 768px) {
-    .btn-edit, .btn-cancel {
+    .btn-edit, .btn-cancel .btn-accept, .btn-decline {
         width: 30px;
         height: 30px;
     }
@@ -268,13 +268,24 @@ h1, h2 {
     transform: scale(1.1);
 }
 
-.btn-cancel {
+.btn-cancel, .btn-decline {
     color: #e74c3c;
     border-color: #e74c3c;
 }
 
-.btn-cancel:hover {
+.btn-cancel:hover, .btn-decline:hover {
     background: #e74c3c;
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-accept{
+    color: #096c34;
+    border-color: #065026;
+}
+
+.btn-accept:hover{
+    background: #055d2b;
     color: white;
     transform: scale(1.1);
 }

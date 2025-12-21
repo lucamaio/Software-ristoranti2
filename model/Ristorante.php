@@ -1,43 +1,23 @@
 <?php
-#package model;
 
-class Ristorante{
+class Ristorante {
 
     // Informazioni di base
     public int $ID_ristorante;
-    public string $nome;
-    public string $indirizzo;
-    public string $numero_civico;
-    public string $telefono;
-    public string $email;
-    // Descrizioni
-    public string $descrizione_breve;
-    public string $descrizione_estesa;
+    public string $nome, $indirizzo, $numero_civico, $telefono, $email, $descrizione_breve, $descrizione_estesa;
 
     // Informazioni fiscali
-    public string $codice_fiscale;
-    public string $partita_iva;
-    public string $ragione_sociale;
+    public string $codice_fiscale, $partita_iva, $ragione_sociale;
 
     // altre informazioni
     public int $capienza;
     public int $id_ristoratore;
 
-    private int $id_citta;
+    public int $id_citta;
 
     // Informazioni mappa
-    private float $latitudine;
-    private float $longitudine;
-
-    // Costruttore
-
-    // public function __construct(int $ID_ristorante, string $nome, string $indirizzo, string $telefono, string $email){
-    //     $this->ID_ristorante = $ID_ristorante;
-    //     $this->nome = $nome;
-    //     $this->indirizzo = $indirizzo;
-    //     $this->telefono = $telefono;
-    //     $this->email = $email;
-    // }
+    public float $latitudine;
+    public float $longitudine;
 
     // Costruttore completo
     public function __construct(int $ID_ristorante, string $nome, string $indirizzo, string $numero_civico, string $telefono, string $email,
@@ -58,63 +38,10 @@ class Ristorante{
         $this->id_ristoratore = $id_ristoratore;
     }
 
-    // metodi set e get
-
-    
-    public function gatID_ristorante(): int {
-        return $this->ID_ristorante;
-    }
-
-    public function getNome(): string {
-        return $this->nome;
-    }
-    public function getIndirizzo(): string {
-        return $this->indirizzo;
-    }
-    public function getTelefono(): string {
-        return $this->telefono;
-    }
-    public function getEmail(): string {
-        return $this->email;
-    }
-    
-    public function getNumeroCivico(): string {
-        return $this->numero_civico;
-    }
-    
-    public function getDescrizioneBreve(): string {
-        return $this->decrizione_breve;
-    }
-    public function getDescrizioneEstesa(): string {
-        return $this->decrizione_estesa;
-    }
-    public function getCodiceFiscale(): string {
-        return $this->codice_fiscale;
-    }
-    public function getPartitaIva(): string {
-        return $this->partita_iva;
-    }
-    public function getRagioneSociale(): string {
-        return $this->ragione_sociale;
-    }
-    public function getCapienza(): int {
-        return $this->capienza;
-    }
-    public function getIdRistoratore(): int {
-        return $this->id_ristoratore;
-    }
-    public function getIdCitta(): int {
-        return $this->id_citta;
-    }
-    public function getLatitudine(): float {
-        return $this->latitudine;
-    }
-    public function getLongitudine(): float {
-        return $this->longitudine;
-    }
 
     // Metodo toString per rappresentazione testuale
     public function __toString(){
         return "Ristorante: id: $this->id, $this->nome, Indirizzo: $this->indirizzo, Telefono: $this->telefono, Email: $this->email";
     }
+
 }?>

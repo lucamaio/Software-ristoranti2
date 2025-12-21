@@ -1,39 +1,23 @@
-<?php 
-    include_once '../includes/functions.php';
+ const cartQuantities = {};
 
-    session_start(); 
-    if(!isset($_SESSION['user_id'])){
-        message("Devi accedere per poter visualizzare questa pagina");
+    function updateBadge(id) {
+        const badge = document.getElementById(`badge-${id}`);
+        const qty = cartQuantities[id] ?? 0;
+
+        if (!badge) return;
+
+        if (qty > 0) {
+            badge.textContent = qty;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
     }
-?>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Menù Ristorante</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="../css/menu.css" rel ="stylesheet" />
-</head>
-
-<body>
-
-<div class="container-fluid">
-    <div id="menu-data"></div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
     window.onload = () => caricaMenu();
 
     async function caricaMenu() {
-        const id = <?php echo json_encode($_GET['id']); ?>;
-        const url = "../api/menu.php?id=" + encodeURIComponent(id);
+        const id = window.APP_CONFIG.ID_ristorante;
+        const url = "../../api/menu.php?id=" + encodeURIComponent(id);
 
         try {
             const response = await fetch(url);
@@ -43,7 +27,7 @@
 
             let html = `
                 <div class="hero-section">
-                    <a href="ristorante.php?id=${id}" class="btn btn-dark back-button">
+                    <a href="mostra.php?id=${id}" class="btn btn-dark back-button">
                         <i class="bi bi-arrow-left"></i>
                     </a>
                     <h1 class="restaurant-name">${result.nomeRistorante}</h1>
@@ -53,6 +37,9 @@
                     <div class="text-center mb-4">
                         <button class="btn btn-success">
                             <i class="bi bi-calendar-check"></i> Prenota
+                        </button>
+                        <button class="btn btn-secondary" onclik ="window.location.href="../carrello/index.php">
+                            <i class="bi bi-calendar-check"></i> Carrelli
                         </button>
                     </div>
             `;
@@ -83,10 +70,11 @@
                                     <div class="text-end">
                                         <div class="menu-item-price">€${piatto.prezzo}</div>
                                         <div class="btn-add-to-cart-wrapper">
+                                            <div class="cart-badge" id="badge-${piatto.ID_piatto}"></div>
                                             <button class="btn-add-to-cart" onclick="addToCart('${piatto.ID_piatto}')">
                                                 <i class="bi bi-cart-plus"></i> Aggiungi
                                             </button>
-                                            <button class="btn-remove-from-cart" onclick="removeFromCart('${piatto.id}')">
+                                            <button class="btn-remove-from-cart" onclick="removeFromCart('${piatto.ID_piatto}')">
                                                 <i class="bi bi-trash"></i> Rimuovi
                                             </button>
                                         </div>
@@ -120,34 +108,56 @@
         }
     }
 
-    async function addToCart(id) {
-        
-        const url = "../api/cart.php?id=" + encodeURIComponent(id);
-        try{
-            const response = await fetch(url, {
-                method: "POST",
-                   headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: new URLSearchParams({
-                    id: id,
-                    azione: 'add'
-                })
-            });
+   async function addToCart(id) {
+    const url = "../../api/cart.php";
 
-            if(!response.ok){
-                throw new Error("Errore HTTP" + response.status);
-            }
-            alert("Piatto " + id + " aggiunto al carrello");            
-        }catch(error){
-            alert("Errore nel inserimento del piatto "+ id +" al carrello");
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({
+                ID_piatto: id,
+                azione: 'aggiungi'
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Errore HTTP " + response.status);
         }
-    }
 
-    function removeFromCart(id) {
-        alert("Piatto " + id + " rimosso dal carrello");
-    }
-</script>
+        cartQuantities[id] = (cartQuantities[id] ?? 0) + 1;
+        updateBadge(id);
 
-</body>
-</html>
+    } catch (error) {
+        alert("Errore nell'inserimento del piatto nel carrello");
+    }
+}
+
+
+    async function removeFromCart(id) {
+    const url = "../../api/cart.php";
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({
+                azione: 'rimuovi',
+                ID_piatto: id,
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Errore HTTP " + response.status);
+        }
+
+        cartQuantities[id] = Math.max((cartQuantities[id] ?? 0) - 1, 0);
+        updateBadge(id);
+
+    } catch (error) {
+        alert("Errore nella rimozione del piatto dal carrello");
+    }
+}

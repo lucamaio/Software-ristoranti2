@@ -1,11 +1,11 @@
   window.onload = function() {
-            ristorantiGet(); // richiamo automatico al caricamento
+            getRistoranti(); // richiamo automatico al caricamento
             // document.getElementById("get").addEventListener("click", ristorantiGet); // Pulsante aggiorna risultati
 
             const  loginButton = document.getElementById("btn-login");
             if(loginButton){
                 loginButton.addEventListener('click', function(){
-                    window.location.href = "login.php";
+                    window.location.href = "login";
                 });
             }
 
@@ -33,7 +33,7 @@
             const cartButton = document.getElementById('btn-carrello');
             if(cartButton){
                 cartButton.addEventListener('click', function(){
-                    window.location.href = "carrello.php"; 
+                    window.location.href = "carrello/index.php"; 
                 })
             }
 
@@ -44,45 +44,49 @@
                 })
             }
         };
- function ristorantiGet() {
-            var oReq = new XMLHttpRequest();
-            oReq.onload = function() {
-                var dati = JSON.parse(oReq.responseText);
-                var container = document.getElementById("ajaxres");
-                container.innerHTML = ""; // pulisco contenuto precedente
 
-                dati.forEach(function(r) {
-                    var div = document.createElement("div");
-                    div.className = "restaurant-card"; // stile personalizzato
-                    
-                    div.innerHTML = `
-                    <a href="ristorante.php?id=${r.ID_ristorante}" style="text-decoration: none; color: inherit;">
-                        <img src="../ristorante.png" alt="Immagine del ristorante" class="restaurant-image">
+async function getRistoranti() {
+    const url = '../api/ristoranti.php';
+    var container = document.getElementById("show-ristoranti");
+    container.innerHTML = '';
+    
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ 
+                request_type: "get"
+            })
+        });
+
+        const result = await response.json();
+        //console.log(result);
+
+        if(result){
+           console.log('success');
+           result.data.forEach(r => {
+                var div = document.createElement("div");
+                 div.className = "restaurant-card";
+                div.innerHTML = `
+                    <a href="ristoranti/mostra.php?id=${r.ristorante.ID_ristorante}" style="text-decoration: none; color: inherit;">
+                        <img src="${r.url_immagine}" alt="Immagine del ristorante" class="restaurant-image">
                         <div class="card-body">
-                            <h5 class="card-title">${r.nome}</h5>
+                            <h5 class="card-title">${r.ristorante.nome}</h5>
                             <p class="card-text">
-                                <strong>ID:</strong> ${r.ID_ristorante}<br>
-                                <strong>Indirizzo:</strong> ${r.indirizzo}<br>
-                                <strong>Telefono:</strong> ${r.telefono}<br>
-                                <strong>Email:</strong> ${r.email}
+                                <strong>ID:</strong> ${r.ristorante.ID_ristorante}<br>
+                                <strong>Indirizzo:</strong> ${r.ristorante.indirizzo} ${r.ristorante.numero_civico}<br>
+                                <strong>Telefono:</strong> ${r.ristorante.telefono}<br>
+                                <strong>Email:</strong> ${r.ristorante.email}
                             </p>
                         </div>
                     </a>
-                    `;
-                    container.appendChild(div);
-                });
-            };
-
-            oReq.onerror = function() {
-                document.getElementById("ajaxres").innerHTML = `
-                    <div class="alert alert-danger" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill"></i> Errore nella richiesta dei ristoranti.
-                    </div>
                 `;
-            };
-
-            oReq.open("GET", "../api/ristoranti.php", true); // Cambiato URL relativo
-            oReq.send();
+                container.appendChild(div);
+            });
+        } else {
+            alert("Errore nella prenotazione!");
         }
-
-       
+    } catch(error) {
+        console.log("Errore: ", error.message);
+    }
+}

@@ -33,15 +33,38 @@
             <!-- <button id="get" class="btn btn-primary btn-modern">
                 <i class="bi bi-arrow-clockwise"></i> Aggiorna Ristoranti
             </button> -->
-            <?php if(isset($_SESSION['user_id'])){?>
-                <button id="btn-prenotazioni" class="btn btn-secondary btn-modern">
-                    <i class="bi bi-calendar-check"></i> Prenotazioni
-                </button>
-                <button id="btn-ordini" class="btn btn-secondary btn-modern">
-                    <i class="bi bi-receipt"></i> Ordini
-                </button>
-                <button id="btn-carrello" class="btn btn-secondary btn-modern">
-                    <i class="bi bi-receipt"></i> Carello
+            <?php if(isset($_SESSION['user_id'])){
+                $role = $_SESSION['role'] ?? null;
+                if($role === 'client' ){ ?>
+                    <button id="btn-prenotazioni" class="btn btn-secondary btn-modern">
+                        <i class="bi bi-calendar-check"></i> Prenotazioni
+                    </button>
+                    <button id="btn-ordini" class="btn btn-secondary btn-modern">
+                        <i class="bi bi-receipt"></i> Ordini
+                    </button>
+                    <button id="btn-carrello" class="btn btn-secondary btn-modern">
+                        <i class="bi bi-receipt"></i> Carello
+                    </button>
+                <?php } else if($role === 'restaurant'){?>
+                        <button id="btn-addRistorante" class="btn btn-secondary btn-modern">
+                            <i class="bi bi-receipt"></i> Aggiungi Ristoranti
+                        </button>
+                        <button id="btn-prenotazioni" class="btn btn-secondary btn-modern">
+                            <i class="bi bi-calendar-check"></i> Prenotazioni
+                        </button>
+                        <button id="btn-ordini" class="btn btn-secondary btn-modern">
+                            <i class="bi bi-receipt"></i> Ordini
+                        </button>
+                        <button id="btn-pagamenti" class="btn btn-secondary btn-modern">
+                            <i class="bi bi-receipt"></i> Pagamenti
+                        </button>
+                <?php } //else if($role === 'chef'){?>
+
+                <?php // } else if($role === 'admin'){ ?>
+
+                <?php //} ?>
+                <button id="btn-profilo" class="btn btn-secondary btn-modern">
+                    <i class="bi bi-box-arrow-right"></i> Profilo
                 </button>
                 <button id="btn-logout" class="btn btn-danger btn-modern">
                     <i class="bi bi-box-arrow-right"></i> Logout
@@ -53,7 +76,7 @@
             <?php }?>
         </div>
         
-        <div id="ajaxres" class="d-flex flex-wrap gap-3"></div> <!-- contenitore per i div -->
+        <div id="show-ristoranti" class="d-flex flex-wrap gap-3"></div> <!-- contenitore per i div -->
     </div>
 
     <!-- Bootstrap JS -->

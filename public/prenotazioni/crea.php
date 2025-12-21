@@ -154,7 +154,7 @@ async function prenota(event) {
             mostraMessaggio(result.message || "Prenotazione effettuata con successo!", 'success');
             
             setTimeout(() => {
-                window.location.href = "index.php";
+                window.location.href = "../index.php";
             }, 2000);
         } else {
             mostraMessaggio("Errore nella prenotazione!", 'error');

@@ -1,0 +1,103 @@
+  body {
+            background-color: #ffffff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333333;
+        }
+
+        .hero-section {
+            position: relative;
+            height: 250px;
+            /* Ridotta da 300px per renderla meno grande */
+            background: url('http://localhost:8080/prenota2/Ristorante.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .restaurant-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            /* Per migliorare la leggibilità */
+        }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+
+        .section {
+            padding: 40px 0;
+        }
+
+        .info-card {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #007bff;
+            /* Cambiato in blu */
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-icon {
+            margin-right: 10px;
+            color: #007bff;
+            /* Cambiato in blu */
+        }
+
+        .description {
+            line-height: 1.6;
+        }
+
+        .btn-modern {
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .reviews-section {
+            margin-top: 40px;
+        }
+
+        .review-card {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 150px;
+                /* Ridotta da 200px per mobile */
+            }
+
+            .restaurant-name {
+                font-size: 2rem;
+            }
+        }

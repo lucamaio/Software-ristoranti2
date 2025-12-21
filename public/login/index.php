@@ -1,11 +1,11 @@
-<?php include '../includes/functions.php';
+<?php require_once '../../includes/functions.php';
 session_start();
 if (!isset($_SESSION['user_id'])) { ?>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login</title>
-        <link rel="stylesheet" href="../css/login.css">
+        <link rel="stylesheet" href="../../css/login.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body class="login-image">
@@ -27,7 +27,7 @@ if (!isset($_SESSION['user_id'])) { ?>
         </main>
     </body>
 <?php } else { 
-    message("Sei già Logato!","index.php");
+    message("Sei già Logato!","../index.php");
 } ?>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -46,7 +46,7 @@ if (!isset($_SESSION['user_id'])) { ?>
         }
 
         try {
-            const response = await fetch("../api/login.php", {
+            const response = await fetch("../../api/login.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"

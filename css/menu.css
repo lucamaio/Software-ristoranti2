@@ -1,143 +1,166 @@
 body {
-            background-color: #ffffff;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            color: #333333;
-        }
+    background-color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333333;
+}
 
-        /* HERO */
-        .hero-section {
-            position: relative;
-            height: 250px;
-            background: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/90/de/18/le-sale-del-ristorante.jpg?w=900&h=500&s=1') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+/* HERO */
+.hero-section {
+    position: relative;
+    height: 250px;
+    background: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/90/de/18/le-sale-del-ristorante.jpg?w=900&h=500&s=1') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
-        .restaurant-name {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
+.restaurant-name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
 
-        .section {
-            padding: 40px 0;
-        }
+.section {
+    padding: 40px 0;
+}
 
-        /* CATEGORIA */
-        .category-box {
-            margin-bottom: 35px;
-        }
+/* CATEGORIA */
+.category-box {
+    margin-bottom: 35px;
+}
 
-        .category-header {
-            background-color: #f1f5ff;
-            border-left: 6px solid #0d6efd;
-            padding: 14px 18px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+.category-header {
+    background-color: #f1f5ff;
+    border-left: 6px solid #0d6efd;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 
-        .category-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #0d6efd;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.category-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        /* CONTENITORE PIATTI */
-        .category-content {
-            background-color: #fafafa;
-            border: 1px solid #e3e3e3;
-            border-radius: 10px;
-            padding: 15px 20px;
-        }
+/* CONTENITORE PIATTI */
+.category-content {
+    background-color: #fafafa;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 15px 20px;
+}
 
-        /* PIATTI */
-        .menu-item {
-            padding: 15px 0;
-            border-bottom: 1px dashed #dcdcdc;
-        }
+/* PIATTI */
+.menu-item {
+    padding: 15px 0;
+    border-bottom: 1px dashed #dcdcdc;
+}
 
-        .menu-item:last-child {
-            border-bottom: none;
-        }
+.menu-item:last-child {
+    border-bottom: none;
+}
 
-        .menu-item-name {
-            font-weight: 600;
-            color: #212529;
-            font-size: 1.05rem;
-        }
+.menu-item-name {
+    font-weight: 600;
+    color: #212529;
+    font-size: 1.05rem;
+}
 
-        .menu-item-description {
-            font-size: 0.95rem;
-            color: #6c757d;
-            margin-top: 4px;
-        }
+.menu-item-description {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
 
-        .menu-item-price {
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #212529;
-        }
+.menu-item-price {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #212529;
+}
 
-        /* PULSANTI CARRELLO */
-        .btn-add-to-cart-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            margin-top: 8px;
-            gap: 6px;
-        }
+/* PULSANTI CARRELLO */
+.btn-add-to-cart-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 8px;
+    gap: 6px;
+}
 
-        .btn-add-to-cart {
-            background-color: #ff3556;
-            color: #ffffff;
-            font-weight: 600;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-        }
+.btn-add-to-cart {
+    background-color: #ff3556;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
 
-        .btn-add-to-cart:hover {
-            background-color: #e82e4d;
-            transform: translateY(-1px);
-        }
+.btn-add-to-cart:hover {
+    background-color: #e82e4d;
+    transform: translateY(-1px);
+}
 
-        .btn-remove-from-cart {
-            background-color: transparent;
-            color: #6c757d;
-            font-size: 0.8rem;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 5px 12px;
-            transition: all 0.2s ease;
-        }
+.btn-remove-from-cart {
+    background-color: transparent;
+    color: #6c757d;
+    font-size: 0.8rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 5px 12px;
+    transition: all 0.2s ease;
+}
 
-        .btn-remove-from-cart:hover {
-            background-color: #f8f9fa;
-            color: #dc3545;
-            border-color: #dc3545;
-        }
+.btn-remove-from-cart:hover {
+    background-color: #f8f9fa;
+    color: #dc3545;
+    border-color: #dc3545;
+}
 
-        @media (max-width: 768px) {
-            .hero-section {
-                height: 160px;
-            }
-            .restaurant-name {
-                font-size: 2rem;
-            }
-        }
+@media (max-width: 768px) {
+    .hero-section {
+        height: 160px;
+    }
+
+    .restaurant-name {
+        font-size: 2rem;
+    }
+}
+
+.btn-add-to-cart-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}

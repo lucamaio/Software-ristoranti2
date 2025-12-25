@@ -34,5 +34,18 @@
         // Confronto
         return $inputDate > $today;
     }
+    function get_template_part($template, $args = []) {
+        $file = __DIR__ . "/../template-parts/{$template}.php";
+
+        if(file_exists($file)) {
+            // Estrae le variabili dall'array $args
+            if(!empty($args) && is_array($args)) {
+                extract(array: $args);
+            }
+            include $file;
+            // var_dump("Incluso: ", $file);
+        }
+    }
+
 
 ?>

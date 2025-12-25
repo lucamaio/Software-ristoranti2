@@ -4,29 +4,7 @@
      color: #333333;
  }
 
- .hero-section {
-    /*background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);*/
-    /* padding: 50px 0; */
-    text-align: center;
-    align-items: center;
- }
-
- .hero-title {
-     font-size: 3rem;
-     font-weight: bold;
-     color: #007bff;
-     margin-bottom: 20px;
- }
-
- .hero-description {
-     font-size: 1.2rem;
-     line-height: 1.6;
-     color: #555;
-     max-width: 800px;
-     margin: 0 auto;
- }
-
- .btn-modern {
+ /* .btn-modern {
      border-radius: 25px;
      padding: 10px 20px;
      font-weight: bold;
@@ -36,7 +14,7 @@
  .btn-modern:hover {
      transform: translateY(-2px);
      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
- }
+ } */
 
  .restaurant-card {
      background-color: #f9f9f9;

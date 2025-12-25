@@ -1,6 +1,6 @@
-window.onload = function(){
+document.addEventListener('DOMContentLoaded',function(){
     getCart();
-}
+});
 
 async function getCart(){
     const url = "../../api/cart.php";

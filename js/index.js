@@ -1,49 +1,13 @@
-  window.onload = function() {
-            getRistoranti(); // richiamo automatico al caricamento
-            // document.getElementById("get").addEventListener("click", ristorantiGet); // Pulsante aggiorna risultati
+  document.addEventListener('DOMContentLoaded', function() {
+    getRistoranti(); 
 
-            const  loginButton = document.getElementById("btn-login");
-            if(loginButton){
-                loginButton.addEventListener('click', function(){
-                    window.location.href = "login";
-                });
-            }
-
-            const logoutButton = document.getElementById("btn-logout");
-            if(logoutButton){
-                logoutButton.addEventListener('click', function(){
-                    window.location.href = "logout.php";
-                });
-            }
-
-            const bookingButton = document.getElementById("btn-prenotazioni");
-            if(bookingButton){
-                bookingButton.addEventListener('click',function() {
-                    window.location.href = "prenotazioni/index.php";
-                });
-            } 
-            
-            const ordiniButton = document.getElementById('btn-ordini');
-            if(ordiniButton){
-                ordiniButton.addEventListener('click', function(){
-                    window.location.href = "ordini.php";
-                })
-            }
-
-            const cartButton = document.getElementById('btn-carrello');
-            if(cartButton){
-                cartButton.addEventListener('click', function(){
-                    window.location.href = "carrello/index.php"; 
-                })
-            }
-
-            const more = document.getElementById('btn-more');
-            if(more){
-                more.addEventListener('click',function(){
-                    window.location.href = "ristoranti.php";
-                })
-            }
-        };
+    const more = document.getElementById('btn-more');
+    if (more) {
+        more.addEventListener('click', function () {
+            window.location.href = "ristoranti.php";
+        })
+    }
+});
 
 async function getRistoranti() {
     const url = '../api/ristoranti.php';
@@ -60,7 +24,6 @@ async function getRistoranti() {
         });
 
         const result = await response.json();
-        //console.log(result);
 
         if(result){
            console.log('success');
@@ -84,7 +47,7 @@ async function getRistoranti() {
                 container.appendChild(div);
             });
         } else {
-            alert("Errore nella prenotazione!");
+            alert("Errore nel recuperare i ristoranti!");
         }
     } catch(error) {
         console.log("Errore: ", error.message);

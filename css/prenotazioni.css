@@ -1,41 +1,39 @@
-/* ../../css/index.css */
-
 /* Reset e base */
-* {
+/* * {
     box-sizing: border-box;
-}
+} */
 
-body {
+/* body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
     margin: 0;
     padding: 20px;
     color: #333;
-}
+} */
 
 /* Responsive padding */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     body {
         padding: 10px;
     }
-}
+} */
 
 /* Titolo */
-h1, h2 {
+/* h1, h2 {
     font-weight: 700;
     color: #2c3e50;
     text-align: center;
     margin-bottom: 30px;
     font-size: 2.5rem;
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+} */
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     h1, h2 {
         font-size: 2rem;
     }
-}
+} */
 
 /* Form prenotazione */
 #form-prenotazione {
@@ -131,7 +129,7 @@ h1, h2 {
 }
 
 /* Pulsante Nuova Prenotazione (se presente) */
-#btn-prenota {
+/* #btn-prenota {
     background: linear-gradient(45deg, #3498db, #2980b9);
     border: none;
     color: white;
@@ -156,7 +154,7 @@ h1, h2 {
         width: 100%;
         padding: 15px;
     }
-}
+} */
 
 /* Card per la tabella (se presente) */
 .card {

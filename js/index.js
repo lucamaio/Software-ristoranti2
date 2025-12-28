@@ -1,4 +1,4 @@
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     getRistoranti(); 
 
     const more = document.getElementById('btn-more');
@@ -26,7 +26,6 @@ async function getRistoranti() {
         const result = await response.json();
 
         if(result){
-           console.log('success');
            result.data.forEach(r => {
                 var div = document.createElement("div");
                  div.className = "restaurant-card";

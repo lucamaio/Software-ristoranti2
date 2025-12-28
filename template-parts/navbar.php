@@ -8,45 +8,43 @@
         $role = $_SESSION['role'] ?? null;
 
         if($role === 'client' ){ ?>
-            <button class="btn-modern bottom-nav-item me-2" id="btn-prenotazioni">
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-prenotazioni">
                 <i class="bi bi-calendar-check"></i> 
-                <span>Prenotazioni</span>
+                <span class="d-flex">Prenotazioni</span>
             </button>
 
-            <button class="btn-modern bottom-nav-item me-2" id="btn-carrello">
-                <i class="bi bi-receipt"></i>
-                <span>Carrelli</span>
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-carrello">
+                <i class="bi bi-cart"></i>
+                <span class="d-flex">Carrelli</span>
             </button>
 
-            <button class="btn-modern bottom-nav-item me-2" id="btn-ordini">
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-ordini">
                 <i class="bi bi-basket3"></i> 
-                <span>Ordini</span>
+                <span class="d-flex">Ordini</span>
             </button>
         <?php } elseif($role === 'restaurant' ){ ?>
-            <button class="btn-modern bottom-nav-item me-2" id="btn-prenotazioni">
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-prenotazioni">
                 <i class="bi bi-calendar-check"></i> 
-                <span>Prenotazioni</span>
+                <span class="d-flex">Prenotazioni</span>
             </button>
-            <button class="btn-modern bottom-nav-item me-2" id="btn-ordini">
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-ordini">
                 <i class="bi bi-basket3"></i> 
-                <span>Ordini</span>
+                <span class="d-flex">Ordini</span>
             </button>
-            <button class="btn-modern bottom-nav-item me-2" id="btn-pagamenti">
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-pagamenti">
                 <i class="bi bi-credit-card-2-front"></i> 
-                <span>Pagamenti</span>
+                <span class="d-flex">Pagamenti</span>
             </button>
         <?php } elseif($role === 'chef'){ ?>
-            <button class="btn-modern bottom-nav-item me-2" id="btn-ristorante">
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-ristorante">
                 <i class="bi bi-shop"></i> 
-                <span>Ristorante</span>
+                <span class="d-flex">Ristorante</span>
             </button>
             <button class="btn-modern bottom-nav-item me-2" id="btn-ordini">
                 <i class="bi bi-basket3"></i> 
-                <span>Ordini</span>
+                <span class="d-flex">Ordini</span>
             </button>
-        <?php } ?>
-
-        <?php 
+        <?php } 
             // Controlla se esiste l'array $btns passato tramite get_template_part
             if (isset($btns) && !empty($btns) && is_array($btns) && $btns != null) {
                 foreach ($btns as $btn) {
@@ -58,22 +56,28 @@
                     </button>
                     <?php
                 }
-            }
-        ?>
+            }else{?>
+                <button class="btn-modern bottom-nav-item me-2" id="btn-profile">
+                    <i class="bi bi-person-circle"></i> 
+                    <span class="d-flex">Profilo</span>
+                </button>
+            <?php } ?>
 
-        <button class="btn-modern bottom-nav-item me-2" id="btn-profile">
-            <i class="bi bi-person-circle"></i> 
-            <span>Profilo</span>
-        </button>
+        
 
-        <button id="btn-logout" class="btn-modern bottom-nav-item">
+        <button id="btn-logout" class="btn-modern bottom-nav-item me-2">
             <i class="bi bi-box-arrow-right"></i> 
-            <span>Esci</span>
+            <span class="d-flex">Esci</span>
         </button>
     <?php } else { ?>
-        <button id="btn-login" class="btn-modern bottom-nav-item">
+        <button id="btn-login" class="btn-modern bottom-nav-item me-2">
             <i class="bi bi-box-arrow-in-right"></i> 
-            <span>Accedi</span>
+            <span class="d-flex">Accedi</span>
+        </button>
+
+        <button id="btn-register" class="btn-modern bottom-nav-item me-2">
+            <i class="bi bi-person-add"></i>
+            <span class="d-flex">Registrati</span>
         </button>
     <?php } ?>
 </nav>

@@ -6,9 +6,9 @@
 
         .hero-section {
             position: relative;
-            height: 250px;
+            height: 450px;
             /* Ridotta da 300px per renderla meno grande */
-            background: url('http://localhost:8080/prenota2/Ristorante.png') no-repeat center center;
+            /* background: url('http://localhost:8080/prenota2/Ristorante.png') no-repeat center center; */
             background-size: cover;
             display: flex;
             align-items: center;
@@ -24,12 +24,12 @@
             /* Per migliorare la leggibilità */
         }
 
-        .back-button {
+        /* .back-button {
             position: absolute;
             top: 10px;
             left: 10px;
             z-index: 10;
-        }
+        } */
 
         .section {
             padding: 40px 0;

@@ -22,6 +22,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <link href="../../css/prenotazioni.css" rel="stylesheet">
+     <link href="../../css/index.css"rel="stylesheet">
     <link href="../../css/global.css"rel="stylesheet">
     <script>
         window.APP_CONFIG = {
@@ -35,16 +36,19 @@
     <script src="../../js/navbar.js" ></script>
 
 </head>
-<body class="p-4">
+<body>
     <div class="hero-section mb-4 mx-3">
         <div class="container">
             <h1 class="hero-title">I miei carrelli</h1>
             <p class="hero-description">Qui puoi visualizzare e gestire i tuoi carrelli.</p>
         </div>
     </div>
-    <div id="message" class="mb-4"></div>
-
-    <div id="table-carts" class="table-responsive mb-3"></div> 
+    <div class="bg-light mb-0 py-5">
+        <div class="container mt-4">
+            <div id="message" class="mb-4"></div>
+            <div id="table-carts" class="table-responsive mb-3"></div>
+        </div>
+    </div> 
     <?php get_template_part('navbar'); ?>
     <?php get_template_part('footer'); ?>
 </body>

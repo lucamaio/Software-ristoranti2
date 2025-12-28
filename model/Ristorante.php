@@ -16,8 +16,7 @@ class Ristorante {
     public int $id_citta;
 
     // Informazioni mappa
-    public float $latitudine;
-    public float $longitudine;
+    public float $latitudine, $longitudine;
 
     // Costruttore completo
     public function __construct(int $ID_ristorante, string $nome, string $indirizzo, string $numero_civico, string $telefono, string $email,

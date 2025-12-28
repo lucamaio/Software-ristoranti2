@@ -47,7 +47,7 @@ switch($method){
                         $prenotazione = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
                         $prenotazioni[] = new PrenotazioniTable($prenotazione, $row['nome_ristorante'], $row['cognome_cliente']. " ".$row['nome_cliente'], $row['numero_tavolo'], $row['nome_stato']);
                     }
-                    echo json_encode($prenotazioni);
+                    echo json_encode(['success' => true, 'data' => $prenotazioni]);
                     exit;
                 case 'restaurant':
                     $query = "SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
@@ -69,7 +69,7 @@ switch($method){
                         $prenotazione = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
                         $prenotazioni[] = new PrenotazioniTable($prenotazione, $row['nome_ristorante'], $row['cognome_cliente']. " ".$row['nome_cliente'], $row['numero_tavolo'], $row['nome_stato']);
                     }
-                    echo json_encode($prenotazioni);
+                     echo json_encode(['success' => true, 'data' => $prenotazioni]);
                     exit;
                 case 'admin':
                     $query = "SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
@@ -85,7 +85,7 @@ switch($method){
                         $prenotazione = new Prenotazione($row['ID_prenotazione'], $row['data_prenotazione'],$row['ora_prenotazione'],$row['persone'],$row['ID_ristorante'],$row['ID_cliente']);
                         $prenotazioni[] = new PrenotazioniTable($prenotazione, $row['nome_ristorante'], $row['cognome_cliente']. " ".$row['nome_cliente'], $row['numero_tavolo'], $row['nome_stato']);
                     }
-                    echo json_encode($prenotazioni);
+                     echo json_encode(['success' => true, 'data' => $prenotazioni]);
                     exit;
             }
             echo json_encode(['success' => false, 'error' => 'Utente non autorizzato']);

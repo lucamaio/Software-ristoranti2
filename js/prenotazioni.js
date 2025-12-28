@@ -1,5 +1,5 @@
-window.onload = function () {
-    getPrenotazioni();
+document.addEventListener('DOMContentLoaded', () => {
+    caricaPrenotazioni();
 
     const getBtn = document.getElementById("get");
     if (getBtn) {
@@ -22,7 +22,125 @@ window.onload = function () {
                 </a>
             </div>`;
     }
-};
+});
+
+/*
+    -------------------------
+        SEZIONE FUNZIONI
+    -------------------------
+*/
+
+// Funzione 1: Mi ricavo le prenotazioni
+
+async function caricaPrenotazioni() {
+    const url = "../../api/prenotazioni.php";
+    try {
+        const response = await fetch(url, {
+            method: "GET"
+        });
+
+        const result = await response.json();
+        // console.log(result);
+        mostraPrenotazioni(result.data);
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+
+// Funzione 2: Mostra le prenotazioni
+
+function mostraPrenotazioni(prenotazioni){
+    const container = document.getElementById("table-responsive");
+    container.innerHTML = "";
+    var role = window.APP_CONFIG.role;
+    
+    // Card wrapper
+    const card = document.createElement("div");
+    card.className = "card shadow-sm";
+
+    card.innerHTML = `
+        <div class="card-header bg-dark fw-semibold">
+            Prenotazioni effettuate
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Ristorante</th>
+                            <th>Nominativo</th>
+                            <th>Persone</th>
+                            <th class="col-mobile-hide">Tavolo</th>  <!-- Nascosto su mobile -->
+                            <th class="col-mobile-hide">Stato Prenotazione</th>  <!-- Nascosto su mobile -->
+                            <th class="text-center">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prenotazioni-body"></tbody>
+                </table>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(card);
+
+    const tbody = document.getElementById("prenotazioni-body");
+    var riga = 1;
+
+    prenotazioni.forEach(function (r) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${r.prenotazione.data_prenotazione} ${r.prenotazione.ora_prenotazione}</td>
+            <td>${r.nomeRistorante}</td>
+            <td>${r.nominativo}</td>
+            <td>${r.prenotazione.numero_persone}</td>
+            <td id="tavolo-${r.prenotazione.ID_prenotazione}" class="col-mobile-hide">${r.tavolo ?? '-'}</td>  <!-- Nascosto su mobile -->
+            <td class="col-mobile-hide">${r.statoPrenotazione ?? '-' }</td>  <!-- Nascosto su mobile -->
+        `;
+        const tdAzioni = document.createElement('td');
+        tdAzioni.classList = 'text-center';
+        if(r.statoPrenotazione === 'In Attesa' || r.statoPrenotazione === 'Modificata'){
+            tdAzioni.appendChild(creaPulsantiAzioni(role, r.prenotazione.ID_prenotazione));
+        }else{
+            tdAzioni.innerHTML = `<td> </td>`;
+        }
+        tr.appendChild(tdAzioni);
+        tbody.appendChild(tr);
+        
+        // console.log("riga: "+riga+" | ID_stato_prenotazione: "+r.statoPrenotazione +" | Tavolo: "+  r.tavolo +" | ID_prenotazione: "+ r.prenotazione.ID_prenotazione + " | ID_ristorante: "+ r.prenotazione.ID_ristorante+"\n");
+        // console.log(r);
+        
+        // Carico selcet tavolo se serve
+        if(role === 'restaurant' && r.statoPrenotazione === "Confermata" && r.tavolo === null){
+            caricaSelectTavolo(r.prenotazione.ID_prenotazione, r.prenotazione.ID_ristorante);
+        }
+    });
+
+    tbody.addEventListener("click", function(e){
+        if (e.target.closest('.btn-edit')) {
+            const id = e.target.closest('.btn-edit').dataset.id;
+            window.location.href="modifica.php/?id="+ id;
+        }
+
+        if (e.target.closest('.btn-cancel')) {
+            const id = e.target.closest('.btn-cancel').dataset.id;
+            cancellaPrenotazione(id);
+        }
+
+        if(e.target.closest('.btn-accept')){
+            const id = e.target.closest('.btn-accept').dataset.id;
+            accettaPrenotazione(id);
+        }
+
+        if(e.target.closest('.btn-decline')){
+            const id = e.target.closest('.btn-decline').dataset.id;
+            declinaPrenotazione(id);
+        }
+    });
+}
+
+// Funzione 3: Crea pulsanti Azioni
 
 function creaPulsantiAzioni(role, idPrenotazione){
     const div = document.createElement('div');
@@ -48,201 +166,7 @@ function creaPulsantiAzioni(role, idPrenotazione){
     }
     return div;
 }
-
-async function cancellaPrenotazione(id) {
-    const url = "../../api/prenotazioni.php/?id="+id;
-    try {
-        const response = await fetch(url, {  
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ 
-                request_type: "cancella",
-                ID_prenotazione: id
-            })
-        });
-
-        const result = await response.json();
-        console.log(result);
-        const messageDiv = document.getElementById('message');
-
-       if(result.success){
-            mostraMessaggio("Prenotazione aggiornata!", 'success');
-            getPrenotazioni();
-        } else {
-            mostraMessaggio("Aggiornamento non riuscito!", 'error');
-        }
-
-    } catch(error) {
-        console.error(error.message);
-    }
-}
-
-async function accettaPrenotazione(id){
-    const url = "../../api/prenotazioni.php/?id="+id;
-    try {
-        const response = await fetch(url, {  
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ 
-                request_type: "accetta",
-                ID_prenotazione: id
-            })
-        });
-
-        const result = await response.json();
-        console.log(result);
-        const messageDiv = document.getElementById('message');
-
-       if(result.success){
-            mostraMessaggio("Prenotazione accettata!", 'success');
-            getPrenotazioni();
-        } else {
-            mostraMessaggio("Accettazione non riuscita!", 'error');
-        }
-
-    } catch(error) {
-        console.error(error.message);
-    }
-}
-
-async function declinaPrenotazione(id){
-    const url = "../../api/prenotazioni.php/?id="+id;
-    try {
-        const response = await fetch(url, {  
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ 
-                request_type: "declina",
-                ID_prenotazione: id
-            })
-        });
-
-        const result = await response.json();
-        console.log(result);
-        const messageDiv = document.getElementById('message');
-
-       if(result.success){
-            mostraMessaggio("Prenotazione rifiutata!", 'success');
-            getPrenotazioni();
-        } else {
-            mostraMessaggio("Operazione non riuscita!", 'error');
-        }
-
-    } catch(error) {
-        console.error(error.message);
-    }
-}
-
-function getPrenotazioni() {
-    const oReq = new XMLHttpRequest();
-
-    oReq.onload = function () {
-        const dati = JSON.parse(oReq.responseText);
-        const container = document.getElementById("table-responsive");
-        container.innerHTML = "";
-        var role = window.APP_CONFIG.role;
-        // console.log(role);
-
-        // Card wrapper
-        const card = document.createElement("div");
-        card.className = "card shadow-sm";
-
-        card.innerHTML = `
-            <div class="card-header bg-white fw-semibold">
-                Prenotazioni effettuate
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Data</th>
-                                <th>Ristorante</th>
-                                <th>Nominativo</th>
-                                <th>Persone</th>
-                                <th class="col-mobile-hide">Tavolo</th>  <!-- Nascosto su mobile -->
-                                <th class="col-mobile-hide">Stato Prenotazione</th>  <!-- Nascosto su mobile -->
-                                <th class="text-center">Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody id="prenotazioni-body"></tbody>
-                    </table>
-                </div>
-            </div>
-        `;
-
-        container.appendChild(card);
-
-        const tbody = document.getElementById("prenotazioni-body");
-        var riga = 1;
-
-        dati.forEach(function (r) {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${r.prenotazione.data_prenotazione} ${r.prenotazione.ora_prenotazione}</td>
-                <td>${r.nomeRistorante}</td>
-                <td>${r.nominativo}</td>
-                <td>${r.prenotazione.numero_persone}</td>
-                <td id="tavolo-${r.prenotazione.ID_prenotazione}" class="col-mobile-hide">${r.tavolo ?? '-'}</td>  <!-- Nascosto su mobile -->
-                <td class="col-mobile-hide">${r.statoPrenotazione ?? '-' }</td>  <!-- Nascosto su mobile -->
-            `;
-            const tdAzioni = document.createElement('td');
-            tdAzioni.classList = 'text-center';
-            if(r.statoPrenotazione === 'In Attesa' || r.statoPrenotazione === 'Modificata'){
-                tdAzioni.appendChild(creaPulsantiAzioni(role, r.prenotazione.ID_prenotazione));
-            }else{
-                tdAzioni.innerHTML = `<td> </td>`;
-            }
-            tr.appendChild(tdAzioni);
-            tbody.appendChild(tr);
-            
-            console.log("riga: "+riga+" | ID_stato_prenotazione: "+r.statoPrenotazione +" | Tavolo: "+  r.tavolo +" | ID_prenotazione: "+ r.prenotazione.ID_prenotazione + " | ID_ristorante: "+ r.prenotazione.ID_ristorante+"\n");
-            console.log(r);
-           
-            
-           
-            
-            // Carico selcet tavolo se serve
-            if(role === 'restaurant' && r.statoPrenotazione === "Confermata" && r.tavolo === null){
-                caricaSelectTavolo(r.prenotazione.ID_prenotazione, r.prenotazione.ID_ristorante);
-            }
-        });
-
-        tbody.addEventListener("click", function(e){
-            if (e.target.closest('.btn-edit')) {
-                const id = e.target.closest('.btn-edit').dataset.id;
-                window.location.href="modifica.php/?id="+ id;
-            }
-
-            if (e.target.closest('.btn-cancel')) {
-                const id = e.target.closest('.btn-cancel').dataset.id;
-                cancellaPrenotazione(id);
-            }
-
-            if(e.target.closest('.btn-accept')){
-                const id = e.target.closest('.btn-accept').dataset.id;
-                accettaPrenotazione(id);
-            }
-
-            if(e.target.closest('.btn-decline')){
-                const id = e.target.closest('.btn-decline').dataset.id;
-                declinaPrenotazione(id);
-            }
-        });
-    };
-
-    oReq.onerror = function () {
-        document.getElementById("table-responsive").innerHTML = `
-            <div class="alert alert-danger m-3">
-                Errore nella richiesta delle prenotazioni
-            </div>
-        `;
-    };
-
-    oReq.open("GET", "http://localhost:8080/prenota2/api/prenotazioni.php", true);
-    oReq.send();
-}
-// Funzione che gestisce il tavolo
+// Funzione 4: Seleziona un tavolo se neccessario
 
 async function caricaSelectTavolo(ID_prenotazione, ID_ristorante){
     // Mi ricavo la colonna da modificare
@@ -269,7 +193,7 @@ async function caricaSelectTavolo(ID_prenotazione, ID_ristorante){
         });
 
         const result = await response.json();
-        console.log(result.success);
+        // console.log(result.success);
         const messageDiv = document.getElementById('message');
 
        if(result.success){
@@ -295,43 +219,7 @@ async function caricaSelectTavolo(ID_prenotazione, ID_ristorante){
 
 }
 
-async function setTavolo(ID_prenotazione, ID_tavolo) {
-
-    if (!ID_tavolo) {
-        return;
-    }
-
-    const url = "../../api/tavoli.php";
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({
-                request_type: "set",
-                ID_prenotazione: ID_prenotazione,
-                ID_tavolo: ID_tavolo
-            })
-        });
-
-        const result = await response.json();
-        console.log(result);
-
-        if (result.success) {
-            mostraMessaggio("Tavolo assegnato correttamente", "success");
-            getPrenotazioni(); // ricarico la tabella
-        } else {
-            mostraMessaggio(result.error ?? "Errore durante l'assegnazione", "error");
-        }
-
-    } catch (error) {
-        console.error(error);
-        mostraMessaggio("Errore di comunicazione con il server", "error");
-    }
-}
-
-
-// Funzione che aggiorna il messaggio
+// Funzione 5: Mostra un messaggio
 
 function mostraMessaggio(testo, tipo='success') {
     const messageDiv = document.getElementById('message');
@@ -353,4 +241,136 @@ function mostraMessaggio(testo, tipo='success') {
             messageDiv.style.display = 'none';
         }, 400);
     }, 3000);
+}
+
+/*
+    -------------------------
+        SEZIONE AZIONI
+    -------------------------
+*/
+
+// Azione 1:  Accetta prenotazione -> Ristoratore
+
+async function accettaPrenotazione(id){
+    const url = "../../api/prenotazioni.php/?id="+id;
+    try {
+        const response = await fetch(url, {  
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ 
+                request_type: "accetta",
+                ID_prenotazione: id
+            })
+        });
+
+        const result = await response.json();
+        // console.log(result);
+        const messageDiv = document.getElementById('message');
+
+       if(result.success){
+            mostraMessaggio("Prenotazione accettata!", 'success');
+            caricaPrenotazioni();
+        } else {
+            mostraMessaggio("Accettazione non riuscita!", 'error');
+        }
+
+    } catch(error) {
+        console.error(error.message);
+    }
+}
+
+// Azione 2: Canncella prenotazione -> cliente
+
+async function cancellaPrenotazione(id) {
+    const url = "../../api/prenotazioni.php/?id="+id;
+    try {
+        const response = await fetch(url, {  
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ 
+                request_type: "cancella",
+                ID_prenotazione: id
+            })
+        });
+
+        const result = await response.json();
+        // console.log(result);
+        const messageDiv = document.getElementById('message');
+
+       if(result.success){
+            mostraMessaggio("Prenotazione aggiornata!", 'success');
+            caricaPrenotazioni();
+        } else {
+            mostraMessaggio("Aggiornamento non riuscito!", 'error');
+        }
+
+    } catch(error) {
+        console.error(error.message);
+    }
+}
+
+// Azione 3: Declina prenotazione -> ristoratore
+async function declinaPrenotazione(id){
+    const url = "../../api/prenotazioni.php/?id="+id;
+    try {
+        const response = await fetch(url, {  
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ 
+                request_type: "declina",
+                ID_prenotazione: id
+            })
+        });
+
+        const result = await response.json();
+        // console.log(result);
+        const messageDiv = document.getElementById('message');
+
+       if(result.success){
+            mostraMessaggio("Prenotazione rifiutata!", 'success');
+            caricaPrenotazioni();
+        } else {
+            mostraMessaggio("Operazione non riuscita!", 'error');
+        }
+
+    } catch(error) {
+        console.error(error.message);
+    }
+}
+
+// Azione 4: Imposta un tavolo -> ristoratore
+
+async function setTavolo(ID_prenotazione, ID_tavolo) {
+
+    if (!ID_tavolo) {
+        return;
+    }
+
+    const url = "../../api/tavoli.php";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                request_type: "set",
+                ID_prenotazione: ID_prenotazione,
+                ID_tavolo: ID_tavolo
+            })
+        });
+
+        const result = await response.json();
+        // console.log(result);
+
+        if (result.success) {
+            mostraMessaggio("Tavolo assegnato correttamente", "success");
+            caricaPrenotazioni(); // ricarico la tabella
+        } else {
+            mostraMessaggio(result.error ?? "Errore durante l'assegnazione", "error");
+        }
+
+    } catch (error) {
+        console.error(error);
+        mostraMessaggio("Errore di comunicazione con il server", "error");
+    }
 }

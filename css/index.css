@@ -1,156 +1,138 @@
- body {
-     background-color: #ffffff;
-     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-     color: #333333;
- }
+/* =========================================
+   STILE GLOBALE
+   ========================================= */
 
- /* .btn-modern {
-     border-radius: 25px;
-     padding: 10px 20px;
-     font-weight: bold;
-     transition: all 0.3s ease;
- }
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
 
- .btn-modern:hover {
-     transform: translateY(-2px);
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
- } */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* spinge il footer in basso */
+}
 
- .restaurant-card {
-     background-color: #f9f9f9;
-     border: 1px solid #e0e0e0;
-     border-radius: 10px;
-     padding: 20px;
-     margin-bottom: 20px;
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-     transition: transform 0.3s ease;
-     width: 18rem;
- }
+/* =========================================
+   HERO SECTION
+   ========================================= */
+.hero-section {
+    padding: 3rem 1rem;
+    background: #f8f9fa;
+    border-radius: 1rem;
+    text-align: center;
+}
 
- .restaurant-card:hover {
-     transform: translateY(-5px);
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
- }
+.hero-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
 
- .restaurant-card a {
-     text-decoration: none;
-     color: inherit;
- }
+.hero-description {
+    max-width: 720px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
 
- .restaurant-card .card-title {
-     color: #007bff;
-     font-weight: bold;
- }
+/* =========================================
+   RISTORANTI CARD
+   ========================================= */
+.restaurant-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 18rem;
+}
 
- .restaurant-card .card-text {
-     line-height: 1.5;
- }
+.restaurant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
- .restaurant-image {
-     width: 100%;
-     height: 150px;
-     object-fit: cover;
-     border-radius: 10px;
-     margin-bottom: 15px;
- }
+.restaurant-card a {
+    text-decoration: none;
+    color: inherit;
+}
 
- @media (max-width: 768px) {
-     .hero-title {
-         font-size: 2rem;
-     }
+.restaurant-card .card-title {
+    color: #007bff;
+    font-weight: bold;
+}
 
-     .hero-description {
-         font-size: 1rem;
-     }
+.restaurant-card .card-text {
+    line-height: 1.5;
+}
 
-     .restaurant-card {
-         width: 100%;
-     }
- }
+.restaurant-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
 
- /* Contenitore del messaggio */
+/* =========================================
+   MESSAGGI FLOATING
+   ========================================= */
 #message {
-    position: fixed;       /* Fisso nella finestra */
-    top: 20px;             /* Distanza dall’alto */
-    right: 20px;           /* Distanza dal lato destro */
+    position: fixed;
+    top: 20px;
+    right: 20px;
     min-width: 250px;
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 500;
     color: #fff;
-    display: none;          /* Invisibile inizialmente */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* Messaggio di successo */
-#message.success {
-    background-color: #28a745; /* Verde */
-}
+#message.success { background-color: #28a745; }
+#message.error { background-color: #dc3545; }
 
-/* Messaggio di errore */
-#message.error {
-    background-color: #dc3545; /* Rosso */
-}
-
-/* Animazione di comparsa */
 #message.show {
     display: block;
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Animazione di sparizione */
 #message.hide {
     opacity: 0;
     transform: translateY(-20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* Pulsante Home fisso in alto a sinistra */
-#btn-home {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1000; /* Assicura che stia sopra altri elementi */
-}
+/* =========================================
+   FOOTER
+   ========================================= */
+/* .footer-app {
+    background: #000080;
+    color: #fff;
+    padding: 2rem 1rem;
+    width: 100%;
+    text-align: center;
+} */
 
-.back-button {
-    border: none;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    background: linear-gradient(45deg, #2c3e50, #34495e);
-}
-
-.back-button i {
-    margin-right: 5px; /* Spazio tra icona e testo (se aggiunto) */
-}
-
-/* Responsive: su mobile, riduci leggermente la posizione e la dimensione */
+/* =========================================
+   RESPONSIVE
+   ========================================= */
 @media (max-width: 768px) {
-    #btn-home {
-        top: 10px;
-        left: 10px;
-    }
-    
-    .back-button {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
+    .hero-title { font-size: 2rem; }
+    .hero-description { font-size: 1rem; }
+    .restaurant-card { max-width: 100%; }
+}
+
+@media (max-width: 576px) {
+    .hero-section { padding: 2rem 1rem; }
 }

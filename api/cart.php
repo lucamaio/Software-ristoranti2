@@ -70,6 +70,28 @@ switch ($azione) {
         rimuoviPiattoCart($link, $user_id, $_POST['ID_piatto']);
         
         break;
+    case 'incrementa':
+        // Verifico che esistano i campi neccessari per poter effetuare le operazioni
+        if(!isset($_POST['ID_carrello']) || !isset($_POST['ID_piatto'])){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Dati mancanti!']);
+            exit;
+        }
+
+        $ID_carrello = $_POST['ID_carrello'];
+        $ID_piatto = $_POST['ID_piatto'];
+
+        try{
+            incrementaQuantitaPiatto($link, $user_id, $ID_piatto, $ID_carrello);
+            echo json_encode(['success' => true, 'message' => 'Quantità piatto aggiornata!']);
+            exit;
+        }catch(Exception $e){
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            exit;
+        }
+        break;
+        
 
     case 'diminuisci':
         // Verifico che esistano i campi neccessari per poter effetuare le operazioni
@@ -82,39 +104,11 @@ switch ($azione) {
         $ID_carrello = $_POST['ID_carrello'];
         $ID_piatto = $_POST['ID_piatto'];
 
-        // Verifico l'esistenza di un carrello con quel determinato piatto
-        $query = "SELECT dc.quantita FROM carrelli c LEFT JOIN dettagli_carrelli dc ON c.ID_carrello = dc.ID_carrello WHERE c.ID_carrello = ? AND dc.ID_piatto = ? AND c.ID_cliente = ?";
-        $stmt = mysqli_prepare($link, $query);
-        mysqli_stmt_bind_param($stmt, 'iii', $ID_carrello, $ID_piatto, $user_id);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if(mysqli_num_rows($result) !== 1){
-            http_response_code(405);
-            echo json_encode(['success' => false, 'error' => 'Carrello non trovato!']);
-            exit;
-        }
-
-        $row = mysqli_fetch_assoc($result);
-        $quantita = $row['quantita'];
-
-        if($quantita > 1){
-            $quantita --;
-            $stmt2 = mysqli_prepare($link, "UPDATE dettagli_carrelli SET quantita = ? WHERE ID_carrello = ? AND ID_piatto = ?");
-            mysqli_stmt_bind_param($stmt2, 'iii', $quantita, $ID_carrello, $ID_piatto);  
-        }else{
-            $stmt2 = mysqli_prepare($link, "DELETE FROM dettagli_carrelli WHERE ID_carrello = ? AND ID_piatto = ? AND ID_cliente = ? ");
-            mysqli_stmt_bind_param($stmt2, 'iii', $ID_carrello, $ID_piatto, $user_id);
-        }
-
-        if(!mysqli_stmt_execute($stmt2)){
-            http_response_code(405);
-            echo json_encode(['success' => false, 'error' => 'Errore durante l\'aggiornamento']);
-            exit;
-        }
-
-        echo json_encode(['success' => true, 'message' => 'Quantità piatto aggiornata!']);
-        exit;
+        riduciQuantitaPiatto($link, $user_id, $ID_piatto, $ID_carrello);
+        break;        
+    case 'elimina':
+        eliminaCarrello($link, $user_id, $_POST['ID_carrello']);
+        break;
     default:
         http_response_code(400);
         break;
@@ -325,9 +319,62 @@ function rimuoviPiattoCart($link, $user_id, $ID_piatto, $ID_carrello = null){
 // Funzione 5: Riduce la quantità di un piatto
 
 function riduciQuantitaPiatto($link, $user_id, $ID_piatto, $ID_carrello){
-    // Logica da implementare
+    // Verifico l'esistenza di un carrello con quel determinato piatto
+        $query = "SELECT dc.quantita FROM carrelli c LEFT JOIN dettagli_carrelli dc ON c.ID_carrello = dc.ID_carrello WHERE c.ID_carrello = ? AND dc.ID_piatto = ? AND c.ID_cliente = ?";
+        $stmt = mysqli_prepare($link, $query);
+        mysqli_stmt_bind_param($stmt, 'iii', $ID_carrello, $ID_piatto, $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        if(mysqli_num_rows($result) !== 1){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Carrello non trovato!']);
+            exit;
+        }
+
+        $row = mysqli_fetch_assoc($result);
+        $quantita = $row['quantita'];
+
+        if($quantita > 1){
+            $quantita --;
+            $stmt2 = mysqli_prepare($link, "UPDATE dettagli_carrelli SET quantita = ? WHERE ID_carrello = ? AND ID_piatto = ?");
+            mysqli_stmt_bind_param($stmt2, 'iii', $quantita, $ID_carrello, $ID_piatto);  
+        }else{
+            $stmt2 = mysqli_prepare($link, "DELETE FROM dettagli_carrelli WHERE ID_carrello = ? AND ID_piatto = ? AND ID_cliente = ? ");
+            mysqli_stmt_bind_param($stmt2, 'iii', $ID_carrello, $ID_piatto, $user_id);
+        }
+
+        if(!mysqli_stmt_execute($stmt2)){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Errore durante l\'aggiornamento']);
+            exit;
+        }
+
+        echo json_encode(['success' => true, 'message' => 'Quantità piatto aggiornata!']);
+        exit;
 }
 
+/* 
+    Funzione 6: Elimina un carrello
+    NOTE: Quando si eseguen  questa funzione il carrello non viene eliminato fisicamente dal db
+          ma viene solo aggiornato il suo stato a "annullato" (ID_stato_carrello = 4)
+*/
+function eliminaCarrello($link, $user_id, $ID_carrello){
+    $stato = 4;
+    $query = "UPDATE carrelli 
+              SET ID_stato_carrello = ? 
+              WHERE ID_carrello = ? AND ID_cliente = ? AND ID_stato_carrello = 1";
+
+    $stmt = mysqli_prepare($link, $query);
+    mysqli_stmt_bind_param($stmt, 'iii', $stato, $ID_carrello, $user_id);
+    if(!mysqli_stmt_execute($stmt)){
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => 'Errore durante l\'eliminazione del carrello']);
+        exit;
+    }
+    echo json_encode(['success' => true, 'message' => 'Carrello eliminato con successo']);
+    exit;
+}
 
 /**
  *  FINE PARTE FUNZIONI

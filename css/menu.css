@@ -164,3 +164,86 @@ body {
     justify-content: center;
     z-index: 10;
 }
+
+/* CONTROLLI CARRELLO MODERNI */
+.cart-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;          /* Spaziatura tra i pulsanti */
+    margin-top: 8px;
+}
+
+
+/* BADGE QUANTITÀ */
+.cart-badge {
+    position: relative; /* invece di absolute */
+    top: 0;
+    right: 0;
+    display: flex;      /* sempre flex per centrare testo */
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* BOTTONI GENERICI */
+.btn-cart {
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* AGGIUNGI */
+.btn-add {
+    background-color: #ff3556;
+    color: #fff;
+}
+
+.btn-add:hover {
+    background-color: #e82e4d;
+    transform: translateY(-1px);
+}
+
+/* CONTROLLI QUANTITÀ */
+.qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 4px 6px;
+    border: 1px solid #dee2e6;
+}
+
+.btn-qty {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #dee2e6;
+}
+
+.btn-qty:hover {
+    background-color: #e9ecef;
+}
+
+.qty-value {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* RIMUOVI */
+.btn-remove {
+    background-color: transparent;
+    color: #dc3545;
+    border: 1px solid #dee2e6;
+}
+
+.btn-remove:hover {
+    background-color: #f8d7da;
+}

@@ -1,0 +1,81 @@
+/* ===========================
+   ORDINI – STYLE RESPONSIVE
+   =========================== */
+
+.order-card {
+    border: none;
+    border-radius: 14px;
+    transition: transform .2s ease, box-shadow .2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.order-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+}
+
+.order-card .card-header {
+    border-radius: 14px 14px 0 0;
+    font-size: 0.9rem;
+}
+
+.order-card .card-footer {
+    display: flex;
+    flex-wrap: wrap; /* i pulsanti vanno a capo se non ci stanno */
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+
+.order-card .badge {
+    font-size: .75rem;
+    padding: .35em .65em;
+}
+
+.order-card .btn {
+    transition: transform .15s ease;
+    flex: 1 1 auto;
+    min-width: 100px; /* impedisce pulsanti troppo stretti */
+    margin-bottom: 4px;
+}
+
+.order-card .btn:hover {
+    transform: scale(1.06);
+}
+
+@media (max-width: 576px) {
+    .order-card {
+        margin-bottom: 1rem;
+    }
+
+    .order-card .btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+
+/* Tablet */
+@media (min-width: 577px) and (max-width: 768px) {
+    .order-card p {
+        font-size: .9rem;
+    }
+
+    .order-card .btn {
+        font-size: .75rem;
+        padding: .35rem .6rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .order-card p {
+        font-size: .95rem;
+    }
+
+    .order-card .btn {
+        font-size: .85rem;
+        padding: .4rem .7rem;
+    }
+}

@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Mi ricavo il percorso relativo e il numero di separatori
 
-    console.log(window.location.pathname); // percorso relativo (es: /prenota2/index.php)
+    // console.log(window.location.pathname); // percorso relativo (es: /prenota2/index.php)
     const path = window.location.pathname;
     const num_cart = contaCarattere(path, '/');
-    console.log(num_cart);
+    // console.log(num_cart);
 
     // Controllo se la navbar esiste
     const navbar = document.getElementById('btn-homepage'); // o qualsiasi ID della navbar
@@ -43,6 +43,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        const registerButton = this.getElementById("btn-register");
+         if (registerButton) {
+            registerButton.addEventListener('click', function () {
+                if(num_cart > 3 ){
+                    window.location.href = "../sing_up.php";
+                }else{
+                    window.location.href = "sign_up.php";
+                }
+            });
+        }
+
         const bookingButton = document.getElementById("btn-prenotazioni");
         if (bookingButton) {
             bookingButton.addEventListener('click', function () {
@@ -59,10 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (ordiniButton) {
             ordiniButton.addEventListener('click', function () {
                 if(num_cart > 3 ){
-                    window.location.href = "../ordini.php";
+                    window.location.href = "../ordini/index.php";
 
                 }else{
-                    window.location.href = "ordini.php";
+                    window.location.href = "ordini/index.php";
                 }
             });
         }
@@ -102,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
     }
 });
 

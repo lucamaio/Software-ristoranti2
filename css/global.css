@@ -1,6 +1,22 @@
 /* =========================================
-   STILE GLOBALE - NAV, BUTTON, FOOTER
+   GLOBAL CSS - NAV, BUTTON, FOOTER
    ========================================= */
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* sempre almeno altezza viewport */
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    flex: 1 0 auto; /* permette al footer di restare in basso se il contenuto è poco */
+}
+
+.bg-light {
+    flex: 1 0 auto; /* riempie lo spazio rimanente */
+}
 
 /* ===== Bottom Navigation (Glassmorphism) ===== */
 .bottom-nav {
@@ -12,80 +28,54 @@
     max-width: 520px;
 
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 
-    padding: 12px 8px;
-    border-radius: 20px;
+    padding: 12px 10px;
+    gap: 6px;
 
     background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
+    border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
     z-index: 1000;
-    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
+/* ===== Bottom nav items ===== */
 .bottom-nav-item {
-    flex: 1;
-    text-align: center;
-    color: #6c757d;
-    text-decoration: none;
-    font-size: 0.75rem;
-    transition: all 0.3s ease;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+     color: var(--primary-color, #0052cc);
+}
+.btn-modern:hover {
+    background: rgba(0, 82, 204, 0.12);
+    transform: translateY(-1px);
 }
 
-.bottom-nav-item i {
-    display: block;
-    font-size: 1.4rem;
-    margin-bottom: 2px;
-}
-
-.bottom-nav-item:hover {
-    color: #0d6efd;
-}
-
-.bottom-nav-item.active {
-    color: #0d6efd;
-}
-
-.bottom-nav-item.active i {
-    background: rgba(13, 110, 253, 0.15);
-    padding: 8px;
-    border-radius: 12px;
-}
-
-@media (min-width: 992px) {
-    .bottom-nav {
-        max-width: 720px;
-        bottom: 24px;
-        padding: 14px 16px;
-    }
-
-    .bottom-nav-item span {
-        font-size: 0.8rem;
-    }
-}
-
-/* ===== Pulsanti Moderni ===== */
+/* ===== Pulsanti moderni ===== */
 .btn-modern {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-
     padding: 10px 16px;
-    border-radius: 14px;
-
     font-size: 0.85rem;
     font-weight: 500;
+    border-radius: 14px;
+    text-decoration: none;
 
     border: 1px solid rgba(0, 0, 0, 0.08);
     background: rgba(255, 255, 255, 0.75);
-
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 
     transition: all 0.25s ease;
@@ -95,6 +85,15 @@
 /* Icone all’interno dei pulsanti */
 .btn-modern i {
     font-size: 1rem;
+    flex-shrink: 0;
+}
+
+/* Testo */
+.bottom-nav-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.2s ease;
 }
 
 /* Varianti di colore */
@@ -123,26 +122,26 @@
 
 /* ===== Footer Moderno ===== */
 .footer-app {
-    background: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-    padding: 2rem 0 6rem; /* spazio per bottom nav */
+    background: #000080;
+    color: #fff;
+    padding: 2rem 1rem;
+    width: 100%;
 }
 
 .footer-app .footer-link {
-    color: #6c757d;
+    color: #fff;
     text-decoration: none;
     margin: 0 8px;
     transition: color 0.2s ease;
 }
 
 .footer-app .footer-link:hover {
-    color: #0d6efd;
+    color: #fff;
     text-decoration: underline;
 }
 
-/* Sezioni Titoli */
- .hero-section {
-    /* background: linear-gradient(135deg, #0d6efd, #0a58ca); */
+/* ===== Hero Section ===== */
+.hero-section {
     color: #000;
     padding: 4rem 1rem;
     border-radius: 1rem;
@@ -155,4 +154,70 @@
 .hero-description {
     max-width: 720px;
     opacity: 0.9;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+/* Tablet piccoli */
+@media (max-width: 768px) {
+    .btn-modern {
+        padding: 8px 10px;
+        gap: 4px;
+        font-size: 0.75rem;
+    }
+
+    .bottom-nav-item i {
+        font-size: 1.25rem;
+    }
+}
+
+/* Mobile → nasconde il testo per far entrare tutti i pulsanti */
+@media (max-width: 576px) {
+    .bottom-nav {
+        padding: 10px 6px;
+    }
+
+    .btn-modern {
+        padding: 8px;
+        font-size: 0; /* Rimuove testo */
+        justify-content: center;
+    }
+
+    .bottom-nav-item span {
+        display: none;
+    }
+
+    .bottom-nav-item i {
+        font-size: 1.3rem; /* Mantiene icona leggibile */
+    }
+}
+
+/* Mobile molto stretto */
+@media (max-width: 360px) {
+    .btn-modern {
+        padding: 6px;
+    }
+
+    .bottom-nav-item i {
+        font-size: 1.1rem;
+    }
+}
+
+/* Desktop grande */
+@media (min-width: 992px) {
+    .bottom-nav {
+        max-width: 720px;
+    }
+}
+
+/* Ripristina testo normale per tablet/desktop */
+@media (min-width: 577px) {
+    .bottom-nav-item span {
+        display: inline;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+    }
 }

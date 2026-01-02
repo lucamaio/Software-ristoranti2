@@ -8,14 +8,14 @@ session_start();
 
 // 1. Verifico l'essistenza di una sessione valida 
 
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['ruolo'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Utente non autenticato']);
     exit;
 }
 // 2. Verifico se l'utente è autorizzato ad accedere a questa pagina
 
-if ($_SESSION['role'] !== 'client') {
+if ($_SESSION['ruolo'] !== 'cliente') {
     http_response_code(403);
     echo json_encode(['success' => false, 'error' => 'Accesso non autorizzato']);
     exit;

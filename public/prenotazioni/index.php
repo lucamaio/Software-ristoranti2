@@ -2,7 +2,7 @@
     require_once '../../includes/functions.php'; 
     session_start(); 
 
-    if(!isset($_SESSION['user_id']) || ($_SESSION['role'] === 'chef')){
+    if(!isset($_SESSION['user_id']) || ($_SESSION['ruolo'] === 'cuoco')){
         message("Devi accedere per poter visualizzare questa pagina!");
     }
 ?>
@@ -25,7 +25,7 @@
     <script>
         window.APP_CONFIG = {
             userId: <?= (int) $_SESSION['user_id'] ?>,
-            role : "<?= (string) $_SESSION['role'] ?>"
+            ruolo : "<?= (string) $_SESSION['ruolo'] ?>"
         };
     </script>  
 

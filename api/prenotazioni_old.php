@@ -13,7 +13,7 @@ if(!isset($_SESSION['user_id'])){
     exit;
 }
 $user_id = $_SESSION['user_id'];
-$role = $_SESSION['role'];
+$ruolo = $_SESSION['ruolo'];
 
 if(!isset($method)){
     echo json_encode(['success' => false, 'error' => 'Metodo non specificato!']);
@@ -24,8 +24,8 @@ if(!isset($method)){
 switch($method){
     case 'GET':
         if(!isset($_GET['id'])){
-            switch ($role){
-                case 'client':
+            switch ($ruolo){
+                case 'cliente':
                     $query = "SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
                     FROM `$table` p 
                     LEFT JOIN ristoranti r ON  p.ID_ristorante = r.ID_ristorante
@@ -48,7 +48,7 @@ switch($method){
                     }
                     echo json_encode(['success' => true, 'data' => $prenotazioni]);
                     exit;
-                case 'restaurant':
+                case 'ristoratore':
                     $query = "SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
                     FROM `$table` p 
                     LEFT JOIN ristoranti r ON  p.ID_ristorante = r.ID_ristorante
@@ -171,7 +171,7 @@ switch($method){
                 cancellaPrenotazione($link, $id_prenotazione);
                 break;
             case 'accetta':
-                if($role !== 'restaurant'){
+                if($ruolo !== 'ristoratore'){
                     http_response_code(405);
                     echo json_encode(['success' => false, 'error' => 'Accesso Negato!']);
                     exit;
@@ -187,7 +187,7 @@ switch($method){
                 accettaPrenotazione($link, $id_prenotazione);
                 break;
             case 'declina':
-                if($role !== 'restaurant'){
+                if($ruolo !== 'ristoratore'){
                     http_response_code(405);
                     echo json_encode(['success' => false, 'error' => 'Accesso Negato!']);
                     exit;

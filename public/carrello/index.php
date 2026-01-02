@@ -5,7 +5,7 @@
     if(!isset($_SESSION['user_id'])){
         message("Devi accedere per poter visualizzare questa pagina!");
     }
-    if(isset($_SESSION['role']) && $_SESSION['role'] !== 'client'){
+    if(isset($_SESSION['ruolo']) && $_SESSION['ruolo'] !== 'cliente'){
         message("Non sei autorizzato ad accedere a questa pagina");
     }
 ?>
@@ -27,7 +27,7 @@
     <script>
         window.APP_CONFIG = {
             userId: <?= (int) $_SESSION['user_id'] ?>,
-            role : "<?= (string) $_SESSION['role'] ?>"
+            ruolo : "<?= (string) $_SESSION['ruolo'] ?>"
         };
     </script>  
 

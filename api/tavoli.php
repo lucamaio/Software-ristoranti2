@@ -9,11 +9,11 @@ if(!isset($_SESSION['user_id'])){
     exit;
 }
 $user_id = $_SESSION['user_id'];
-$role = $_SESSION['role'];
+$ruolo = $_SESSION['ruolo'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Verifico che l'utete ha i permessi neccessari
-if($role === 'client' || $role === 'chef' ){
+if($ruolo === 'cliente' || $ruolo === 'cuoco' ){
     echo json_encode(['success' => false, 'error' => 'Accesso Negato!']);
     exit;
 }

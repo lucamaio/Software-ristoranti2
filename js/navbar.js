@@ -16,20 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const btns = ["btn-homepage","btn-login","btn-logout","btn-register",
-                  "btn-prenotazioni","btn-ordini","btn-carrello",
+                  "btn-prenotazioni","btn-ordini","btn-carrello", "btn-ristorante",
                   "btn-profile","btn-pagamenti"];
 
     btns.forEach(id => {
         const btn = document.getElementById(id);
         if(btn){
-            btn.addEventListener('click', function(){
+            btn.addEventListener('click', function(e){
                 switch(id){
                     case "btn-homepage": vaiAllaPagina("index.php"); break;
                     case "btn-login": vaiAllaPagina("login"); break;
                     case "btn-logout":
-                        if(num_cart === 4) window.location.href = "../logout.php";
-                        else if(num_cart === 5) window.location.href = "../../logout.php";
-                        else window.location.href = "logout.php";
+                        vaiAllaPagina("logout.php"); break;
                         break;
                     case "btn-register":
                         if(num_cart > 3) window.location.href = "../sign_up.php";
@@ -55,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     case "btn-pagamenti":
                         if(num_cart > 3) window.location.href = "../pagamenti.php";
                         else window.location.href = "pagamenti.php";
+                        break;
+                    case "btn-ristorante":
+                        const idRistorante = btn.dataset.id;
+                        vaiAllaPagina('ristoranti/mostra.php?id='+idRistorante);
                         break;
                 }
             });

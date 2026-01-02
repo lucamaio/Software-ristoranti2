@@ -1,12 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    getOrders();
+    showLoader();
+    ricavaOrdini();
 });
 
-/* ===========================
-   FETCH ORDINI
-   =========================== */
+/*
+----------------------- FUNZIONI -----------------------
+*/
 
-async function getOrders() {
+/*
+    Funzione 1: ricava ordini dal api,tramite fetch
+*/
+
+async function ricavaOrdini() {
     const url = "../../api/orders.php";
 
     try {
@@ -17,73 +22,71 @@ async function getOrders() {
         });
 
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
+
+        hideLoader();
 
         if (result.success && Array.isArray(result.data) && result.data.length) {
-            renderOrdiniCards(result.data);
+            creaOrdiniCards(result.data, result.ruolo);
         } else {
             mostraMessaggio("Nessun ordine disponibile", "info");
         }
 
     } catch (error) {
         console.error(error);
+        hideLoader();
         mostraMessaggio("Errore nel caricamento degli ordini", "danger");
     }
 }
 
-/* ===========================
-   RENDER CARD ORDINI
-   =========================== */
 
-function renderOrdiniCards(ordini) {
+/*
+    Funzione 2: Caricamento delle card 
+*/
+
+function creaOrdiniCards(ordini,ruolo) {
     const container = document.getElementById("orders-container");
     container.innerHTML = "";
 
     ordini.forEach(o => {
-        const col = document.createElement("div");
-        col.className = "col-12 col-sm-12 col-md-6 col-lg-4";
+        const card = document.createElement("div");
+        card.className = "order-card";
 
-        col.innerHTML = `
-            <div class="card h-100 shadow-sm order-card">
-                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                    <span class="fw-semibold">
-                        <i class="fa-solid fa-calendar-days me-2"></i>
-                        ${formatDataOra(o.ordine?.data_ordine)}
-                    </span>
-                    <span class="badge ${badgeStato(o.stato_ordine)}">
-                        ${o.stato_ordine ?? 'N/D'}
-                    </span>
-                </div>
+        card.innerHTML = `
+            <div class="order-top">
+                <span>
+                    <i class="fa-regular fa-calendar"></i>
+                    <strong>${formatDataOra(o.ordine?.data_ordine)}</strong>
+                </span>
 
-                <div class="card-body d-flex flex-column">
-                    <p class="mb-2">
-                        <i class="fa-solid fa-utensils text-primary me-2"></i>
-                        <strong>${o.nome_ristorante ?? 'N/D'}</strong>
-                    </p>
+                <span class="order-badge ${badgeStato(o.stato_ordine)}">
+                    ${o.stato_ordine}
+                </span>
+            </div>
 
-                    <p class="mt-auto mb-0 text-muted">
-                        Totale:
-                        <span class="fw-bold text-success fs-5">
-                            ${o.totale ?? 'N/D'} €
-                        </span>
-                    </p>
-                </div>
+            <div class="order-title">
+                ${o.nome_ristorante}
+            </div>
 
-                <div class="card-footer bg-light d-flex justify-content-end gap-2 flex-wrap">
-                    ${generaAzioniOrdine(o.ordine.ID_ordine, o.stato_ordine, 'client')}
-                </div>
+            <div class="order-total">
+                ${o.totale} €
+            </div>
+
+            <div class="order-actions">
+                ${generaAzioniOrdine(o.ordine.ID_ordine, o.stato_ordine,ruolo)}
             </div>
         `;
 
-        container.appendChild(col);
+        container.appendChild(card);
     });
 }
 
-/* ===========================
-   AZIONI ORDINE
-   =========================== */
 
-function generaAzioniOrdine(ID_ordine, stato_ordine, role) {
+/*
+    Funzione 3: Inserisci i pulsanti azioni
+*/
+
+function generaAzioniOrdine(ID_ordine, stato_ordine, ruolo) {
     let html = `
         <button class="btn btn-sm btn-outline-primary btn-details"
                 data-ordine="${ID_ordine}">
@@ -91,30 +94,99 @@ function generaAzioniOrdine(ID_ordine, stato_ordine, role) {
         </button>
     `;
 
-    if (role === 'client' && stato_ordine === 'In attesa') {
-        html += `
-            <button class="btn btn-sm btn-outline-danger btn-delete"
-                    data-ordine="${ID_ordine}">
-                <i class="fa-solid fa-trash"></i> Annulla
-            </button>
-        `;
-    }
-
-    if (role === 'client' && stato_ordine === 'Completato') {
-        html += `
-            <button class="btn btn-sm btn-success btn-pay"
-                    data-ordine="${ID_ordine}">
-                <i class="fa-solid fa-credit-card"></i> Paga
-            </button>
-        `;
+    switch(ruolo){
+        case 'cliente':
+            if(stato_ordine === 'In attesa') {
+                html += `
+                    <button class="btn btn-sm btn-outline-danger btn-delete"
+                            data-ordine="${ID_ordine}">
+                        <i class="fa-solid fa-trash"></i> Annulla
+                    </button>
+                `;
+            }else if(stato_ordine === 'Completato'){
+                html += `
+                    <button class="btn btn-sm btn-success btn-pay"
+                            data-ordine="${ID_ordine}">
+                        <i class="fa-solid fa-credit-card"></i> Paga
+                    </button>
+                `;
+            }
+            break;
+        case 'ristoratore':
+            if(stato_ordine === 'Completato') {
+                html += `
+                    <button class="btn btn-sm btn-outline-success btn-paid"
+                            data-ordine="${ID_ordine}">
+                        <i class="fa-solid fa-check-circle"></i> Pagato
+                    </button>
+                `;
+            }
+        case 'cuoco':
+            if(stato_ordine === 'In attesa'){
+                 html += `
+                    <button class="btn btn-sm btn-outline-waring btn-take"
+                            data-ordine="${ID_ordine}">
+                        <i class="fa-solid fa-check-circle"></i> Prendi a carico
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger btn-rifiuta"
+                            data-ordine="${ID_ordine}">
+                        <i class="fa-solid fa-times-circle"></i> Rifiuta
+                    </button>
+                `;
+            }else if(stato_ordine === 'In elaborazione'){
+                 html += `
+                    <button class="btn btn-sm btn-outline-success btn-completato"
+                            data-ordine="${ID_ordine}">
+                        <i class="fa-solid fa-check-circle"></i> Completato
+                    </button>
+                `;
+            }
+            break;
+        
     }
 
     return html;
 }
 
-/* ===========================
-   EVENT DELEGATION
-   =========================== */
+/*
+    Funzione 4: mostra il loader
+*/
+function showLoader() {
+    document.getElementById("orders-loader").classList.remove("d-none");
+    document.getElementById("orders-container").classList.add("d-none");
+}
+
+/*
+    Funzione 5: nascondi il loader
+*/
+
+function hideLoader() {
+    document.getElementById("orders-loader").classList.add("d-none");
+    document.getElementById("orders-container").classList.remove("d-none");
+}
+
+/*
+    Funzione 6: visualizza il messaggio ricevuto come risultato
+*/
+
+/*
+function mostraMessaggio(testo, tipo = "info") {
+    document.getElementById("orders-container").innerHTML = `
+        <div class="col-12">
+            <div class="alert alert-${tipo} text-center shadow-sm">
+                <i class="fa-solid fa-circle-info me-2"></i>${testo}
+            </div>
+        </div>
+    `;
+}*/
+
+/*
+----------------------- AZIONI -----------------------
+*/
+
+/* 
+    Azione 1: Gestione della azione da eseguire a seconda del pulsante
+*/
 
 document.addEventListener("click", e => {
     const btn = e.target.closest("button");
@@ -126,53 +198,68 @@ document.addEventListener("click", e => {
         window.location.href = `dettagli.php?id=${ID_ordine}`;
     }
 
+    if (btn.classList.contains("btn-take")) {
+        cambiaStatoOrdine(ID_ordine,7);
+    }
+
+     if (btn.classList.contains("btn-completato")) {
+        cambiaStatoOrdine(ID_ordine,3);
+    }
+
     if (btn.classList.contains("btn-delete")) {
-        annullaOrdine(ID_ordine);
+        cambiaStatoOrdine(ID_ordine,4);
     }
 
     if (btn.classList.contains("btn-pay")) {
-        pagaOrdine(ID_ordine);
+        // cambiaStatoOrdine(ID_ordine,8);
+        console.log("Funzionalità da implementare!");
     }
+
+    if (btn.classList.contains("btn-paid")) {
+        cambiaStatoOrdine(ID_ordine,8);
+        // console.log("Funzionalità da implementare!");
+    }
+    ricavaOrdini();
 });
 
-/* ===========================
-   SUPPORTO
-   =========================== */
 
 function badgeStato(stato) {
     switch (stato) {
         case 'In attesa': return 'bg-warning text-dark';
         case 'Completato': return 'bg-success';
         case 'Annullato': return 'bg-danger';
+        case 'Pagato': return 'bg-primary text-white';
         default: return 'bg-secondary';
     }
 }
 
-function formatDataOra(dataString) {
-    if (!dataString) return "N/D";
-    return new Date(dataString).toLocaleString("it-IT", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+// Azione 2: Cambia lo stato del ordine
+
+async function cambiaStatoOrdine(ID_ordine, nuovo_stato) {
+    //console.log("Funzione da implementare elabora ordine:", ID_ordine);
+    const url = "../../api/orders.php";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ azione: "cambia-stato",ID_ordine: ID_ordine, nuovo_stato: nuovo_stato })
+        });
+
+        const result = await response.json();
+        console.log(result);
+
+        if (result.success && Array.isArray(result.data) && result.data.length) {
+            creaOrdiniCards(result.data, result.ruolo);
+        } else {
+            mostraMessaggio("Nessun ordine disponibile", "info");
+        }
+
+    } catch (error) {
+        console.error(error);
+        mostraMessaggio("Errore nel caricamento degli ordini", "danger");
+    }
 }
 
-function mostraMessaggio(testo, tipo = "info") {
-    document.getElementById("orders-container").innerHTML = `
-        <div class="col-12">
-            <div class="alert alert-${tipo} text-center shadow-sm">
-                <i class="fa-solid fa-circle-info me-2"></i>${testo}
-            </div>
-        </div>
-    `;
-}
 
-function annullaOrdine(ID_ordine) {
-    console.log("Funzione da implementare Annulla ordine:", ID_ordine);
-}
 
-function pagaOrdine(ID_ordine) {
-    console.log("Funzione da implementare Paga ordine:", ID_ordine);
-}

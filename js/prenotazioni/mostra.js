@@ -63,7 +63,7 @@ async function caricaPrenotazioni() {
 function mostraPrenotazioni(prenotazioni){
     const container = document.getElementById("table-responsive");
     container.innerHTML = "";
-    var role = window.APP_CONFIG.role;
+    var ruolo = window.APP_CONFIG.ruolo;
     
     // Card wrapper
     const card = document.createElement("div");
@@ -111,7 +111,7 @@ function mostraPrenotazioni(prenotazioni){
         const tdAzioni = document.createElement('td');
         tdAzioni.classList = 'text-center';
         if(r.statoPrenotazione === 'In Attesa' || r.statoPrenotazione === 'Modificata'){
-            tdAzioni.appendChild(creaPulsantiAzioni(role, r.prenotazione.ID_prenotazione));
+            tdAzioni.appendChild(creaPulsantiAzioni(ruolo, r.prenotazione.ID_prenotazione));
         }else{
             tdAzioni.innerHTML = `<td> </td>`;
         }
@@ -122,7 +122,7 @@ function mostraPrenotazioni(prenotazioni){
         // console.log(r);
         
         // Carico selcet tavolo se serve
-        if(role === 'restaurant' && r.statoPrenotazione === "Confermata" && r.tavolo === null){
+        if(ruolo === 'ristoratore' && r.statoPrenotazione === "Confermata" && r.tavolo === null){
             caricaSelectTavolo(r.prenotazione.ID_prenotazione, r.prenotazione.ID_ristorante);
         }
     });
@@ -152,10 +152,10 @@ function mostraPrenotazioni(prenotazioni){
 
 // Funzione 3: Crea pulsanti Azioni
 
-function creaPulsantiAzioni(role, idPrenotazione){
+function creaPulsantiAzioni(ruolo, idPrenotazione){
     const div = document.createElement('div');
     // console.log(idPrenotazione);
-    if(role === 'client'){
+    if(ruolo === 'cliente'){
          div.innerHTML = `
             <button class="btn btn-sm btn-outline-primary me-2 mb-2 btn-edit" data-id="${idPrenotazione}" title="Modifica prenotazione">
                 <i class="fa-solid fa-gear"></i>
@@ -164,7 +164,7 @@ function creaPulsantiAzioni(role, idPrenotazione){
                 <i class="fa-solid fa-x"></i>
             </button>
         `;
-    }else if(role === "restaurant"){
+    }else if(ruolo === 'ristoratore'){
         div.innerHTML = `
             <button class="btn btn-sm btn-outline-primary me-2 mb-2 btn-accept" data-id="${idPrenotazione}" title="Accetta prenotazione">
                 <i class="fa-solid fa-check"></i>

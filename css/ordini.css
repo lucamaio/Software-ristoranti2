@@ -1,59 +1,61 @@
-/* ===========================
-   ORDINI – STILE UNIFICATO
-   =========================== */
-
-.orders-section {
-    min-height: auto;
-}
-
-/* Card */
-.order-card {
-    border: none;
-    border-radius: 16px;
-    background: #fff;
+/* ===== MOBILE FIRST ===== */
+.orders-list {
     display: flex;
     flex-direction: column;
-    transition: transform .2s ease, box-shadow .2s ease;
+    gap: 14px;
 }
 
-.order-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+.order-card {
+    border-radius: 16px;
+    background: #fff;
+    padding: 14px 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.08);
 }
 
-.order-card .card-header {
-    font-size: 0.85rem;
-    border-radius: 16px 16px 0 0;
-}
-
-.order-card .badge {
-    font-size: 0.7rem;
-    padding: 0.35em 0.6em;
-}
-
-/* Footer pulsanti */
-.order-card .card-footer {
+/* Header */
+.order-top {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    background: #f8f9fa;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .85rem;
+    color: #000080;
+    margin-bottom: 6px;
 }
 
-.order-card .btn {
-    flex: 1 1 auto;
-    font-size: 0.75rem;
+/* Ristorante */
+.order-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 6px;
 }
 
-/* ===========================
-   MOBILE
-   =========================== */
+/* Totale */
+.order-total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #198754;
+}
 
-@media (max-width: 576px) {
-    .order-card {
-        margin-bottom: 0.5rem;
-    }
+/* Footer */
+.order-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
 
-    .order-card .btn {
-        width: 100%;
+/* Badge */
+.order-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 992px) {
+    .orders-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
     }
 }

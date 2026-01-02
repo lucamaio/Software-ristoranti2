@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Funzione che carica il menù del ristorante
 async function caricaMenu() {
     // 1. Mi ricavo i carrelli del utente se l'utente è client
-    const role = window.APP_CONFIG.role;
-    if(role && role === 'client'){
+    const ruolo = window.APP_CONFIG.ruolo;
+    if(ruolo && ruolo === 'cliente'){
        await  caricaQuantitàCarrello();
     }
     const id = window.APP_CONFIG.ID_ristorante;

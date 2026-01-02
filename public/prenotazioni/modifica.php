@@ -2,7 +2,7 @@
 require_once '../../includes/functions.php';
 session_start();
 
-if (!isset($_SESSION['user_id']) || ($_SESSION['role'] === 'chef')) {
+if (!isset($_SESSION['user_id']) || ($_SESSION['ruolo'] === 'cuoco')) {
     message("Accesso negato!");
 }
 

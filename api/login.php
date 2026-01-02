@@ -33,7 +33,7 @@ switch($richiesta){
         // Verifico se l'utente esiste ed è un cliente
         
         $tables = ['clienti', 'ristoratori', 'cuochi', 'admin'];
-        $rules = ['client', 'restaurant', 'chef', 'admin'];
+        $rules = ['cliente', 'ristoratore', 'cuoco', 'admin'];
         $ids = ['ID_cliente', 'ID_ristoratore', 'ID_cuoco', 'ID_admin'];
         $i = 0;
 
@@ -61,8 +61,12 @@ switch($richiesta){
                     // Avvio la sessione e salvo l'ID dell'utente
                     session_start();
                     $_SESSION['user_id'] = $row[$ids[$i]];
-                    $_SESSION['role'] = $rules[$i];
+                    $_SESSION['ruolo'] = $rules[$i];
                     $_SESSION['email'] = $row['email'];
+
+                    if($rules[$i] === 'cuoco') {
+                        $_SESSION['ID_ristorante'] = $row['ID_ristorante'];
+                    }
                     
                     // Password corretta, login riuscito
                     echo json_encode(['success' => true, 'message' => 'Login riuscito']);

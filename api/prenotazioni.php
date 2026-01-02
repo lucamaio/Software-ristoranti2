@@ -8,7 +8,7 @@ session_start();
 
 // 1. Verifico l'essistenza di una sessione valida 
 
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['ruolo'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Utente non autenticato']);
     exit;
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // 3. Verifico se l'azione è diversa da null
 $user_id = $_SESSION['user_id'];
-$role = $_SESSION['role'];
+$ruolo = $_SESSION['ruolo'];
 $azione = $_POST['azione'] ?? 'null';
 
 if (!$azione) {
@@ -36,7 +36,7 @@ if (!$azione) {
 // 4. Eseguo l'azione richiesta
 switch($azione){
     case 'ricava_prenotazioni':
-        ricavaPrenotazioni($link, $user_id, $role);
+        ricavaPrenotazioni($link, $user_id, $ruolo);
         break;
     case 'dettagli_prenotazione':
             // echo json_encode([
@@ -51,7 +51,7 @@ switch($azione){
                 exit;
             }
 
-            ricavaDettagliPrenotazione($link,$_POST['ID_prenotazione'], $user_id, $role);
+            ricavaDettagliPrenotazione($link,$_POST['ID_prenotazione'], $user_id, $ruolo);
         break;
     case 'crea_prenotazione':
 
@@ -131,9 +131,9 @@ switch($azione){
 
 // Funzione che restituisce tutte le prenotazioni di un utente a seconda del suo ruolo
 
-function ricavaPrenotazioni($link, $user_id, $role){
-    switch($role){
-        case 'client':
+function ricavaPrenotazioni($link, $user_id, $ruolo){
+    switch($ruolo){
+        case 'cliente':
             // Ricavo le prenotazioni del cliente
             $query = "
                 SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
@@ -149,7 +149,7 @@ function ricavaPrenotazioni($link, $user_id, $role){
             $stmt = mysqli_prepare($link, $query);
             mysqli_stmt_bind_param($stmt, "i", $user_id);
             break;
-        case 'restaurant':
+        case 'ristoratore':
             // Ricavo le prenotazioni dei ristoranti gestiti dal ristoratore
             $query = "
                 SELECT p.*, r.nome AS nome_ristorante , t.numero_tavolo AS numero_tavolo, c.nome AS nome_cliente, c.cognome AS cognome_cliente, sp.nome_stato AS nome_stato
@@ -181,7 +181,7 @@ function ricavaPrenotazioni($link, $user_id, $role){
             exit;
     }
 
-    if($role !== 'admin'){
+    if($ruolo !== 'admin'){
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
     } else {
@@ -218,9 +218,9 @@ function ricavaPrenotazioni($link, $user_id, $role){
 
 // Funzione 2: che restituisce i dettagli di una prenotazione
 
-function ricavaDettagliPrenotazione($link, $id_prenotazione, $user_id, $role){
-    switch ($role){
-        case 'client':
+function ricavaDettagliPrenotazione($link, $id_prenotazione, $user_id, $ruolo){
+    switch ($ruolo){
+        case 'cliente':
             $query = "
                 SELECT p.*
                 FROM prenotazioni p 
@@ -229,7 +229,7 @@ function ricavaDettagliPrenotazione($link, $id_prenotazione, $user_id, $role){
             $stmt = mysqli_prepare($link, $query);
             mysqli_stmt_bind_param($stmt, "ii", $id_prenotazione, $user_id);
             break;
-        case 'restaurant':
+        case 'ristoratore':
             $query = "
                 SELECT p.*
                 FROM prenotazioni p 

@@ -30,3 +30,15 @@ function mostraMessaggio(testo, tipo='success') {
         }, 400);
     }, 3000);
 }
+
+// Funzione 2: Formattazione della data e ora
+function formatDataOra(dataString) {
+    if (!dataString) return "N/D";
+    return new Date(dataString).toLocaleString("it-IT", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}

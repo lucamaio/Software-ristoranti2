@@ -7,7 +7,7 @@
     }
 
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-    $role = $_SESSION['role'] ?? null;
+    $ruolo = $_SESSION['ruolo'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -26,7 +26,7 @@
     <script>
         window.APP_CONFIG = {
             ID_ristorante : <?= $id; ?>,
-            role : <?php echo json_encode($role); ?>
+            ruolo : <?php echo json_encode($ruolo); ?>
         };
     </script>
 

@@ -5,9 +5,9 @@
     </button>
 
     <?php if(isset($_SESSION['user_id'])){ 
-        $role = $_SESSION['role'] ?? null;
+        $ruolo = $_SESSION['ruolo'] ?? null;
 
-        if($role === 'client' ){ ?>
+        if($ruolo === 'cliente' ){ ?>
             <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-prenotazioni">
                 <i class="bi bi-calendar-check"></i> 
                 <span class="d-flex">Prenotazioni</span>
@@ -22,7 +22,7 @@
                 <i class="bi bi-basket3"></i> 
                 <span class="d-flex">Ordini</span>
             </button>
-        <?php } elseif($role === 'restaurant' ){ ?>
+        <?php } elseif($ruolo === 'ristoratore' ){ ?>
             <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-prenotazioni">
                 <i class="bi bi-calendar-check"></i> 
                 <span class="d-flex">Prenotazioni</span>
@@ -35,8 +35,8 @@
                 <i class="bi bi-credit-card-2-front"></i> 
                 <span class="d-flex">Pagamenti</span>
             </button>
-        <?php } elseif($role === 'chef'){ ?>
-            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-ristorante">
+        <?php } elseif($ruolo === 'cuoco'){ ?>
+            <button class="btn-modern bottom-nav-item me-2 mx-auto" id="btn-ristorante" data-id="<?= $_SESSION['ID_ristorante'] ?? null; ?>">
                 <i class="bi bi-shop"></i> 
                 <span class="d-flex">Ristorante</span>
             </button>

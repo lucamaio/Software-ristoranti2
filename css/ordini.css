@@ -1,81 +1,59 @@
 /* ===========================
-   ORDINI – STYLE RESPONSIVE
+   ORDINI – STILE UNIFICATO
    =========================== */
 
+.orders-section {
+    min-height: auto;
+}
+
+/* Card */
 .order-card {
     border: none;
-    border-radius: 14px;
-    transition: transform .2s ease, box-shadow .2s ease;
+    border-radius: 16px;
+    background: #fff;
     display: flex;
     flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .order-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .order-card .card-header {
-    border-radius: 14px 14px 0 0;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    border-radius: 16px 16px 0 0;
 }
-
-.order-card .card-footer {
-    display: flex;
-    flex-wrap: wrap; /* i pulsanti vanno a capo se non ci stanno */
-    gap: 0.5rem;
-    justify-content: flex-start;
-}
-
 
 .order-card .badge {
-    font-size: .75rem;
-    padding: .35em .65em;
+    font-size: 0.7rem;
+    padding: 0.35em 0.6em;
+}
+
+/* Footer pulsanti */
+.order-card .card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: #f8f9fa;
 }
 
 .order-card .btn {
-    transition: transform .15s ease;
     flex: 1 1 auto;
-    min-width: 100px; /* impedisce pulsanti troppo stretti */
-    margin-bottom: 4px;
+    font-size: 0.75rem;
 }
 
-.order-card .btn:hover {
-    transform: scale(1.06);
-}
+/* ===========================
+   MOBILE
+   =========================== */
 
 @media (max-width: 576px) {
     .order-card {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .order-card .btn {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.5rem;
-    }
-}
-
-
-/* Tablet */
-@media (min-width: 577px) and (max-width: 768px) {
-    .order-card p {
-        font-size: .9rem;
-    }
-
-    .order-card .btn {
-        font-size: .75rem;
-        padding: .35rem .6rem;
-    }
-}
-
-/* Desktop */
-@media (min-width: 769px) {
-    .order-card p {
-        font-size: .95rem;
-    }
-
-    .order-card .btn {
-        font-size: .85rem;
-        padding: .4rem .7rem;
+        width: 100%;
     }
 }

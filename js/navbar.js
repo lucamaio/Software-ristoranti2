@@ -1,125 +1,67 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Mi ricavo il percorso relativo e il numero di separatori
-
-    // console.log(window.location.pathname); // percorso relativo (es: /prenota2/index.php)
     const path = window.location.pathname;
     const num_cart = contaCarattere(path, '/');
-    // console.log(num_cart);
 
-    // Controllo se la navbar esiste
-    const navbar = document.getElementById('btn-homepage'); // o qualsiasi ID della navbar
-    if (navbar) {
-        // Inizializzo la navbar
-        const homepageButton = document.getElementById("btn-homepage");
-        if (homepageButton) {
-            homepageButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../index.php";
-                }else{
-                    window.location.href = "index.php";
-                }
-            });
+    function vaiAllaPagina(stringa) {
+        if(num_cart <= 3){
+            window.location.href = stringa;
+            return;
         }
-
-        const loginButton = document.getElementById("btn-login");
-        if (loginButton) {
-            loginButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../login";
-                }else{
-                    window.location.href = "login";
-                }
-            });
+        let percorso = "";
+        const slash = "../";
+        for (let i = 0; i < num_cart - 3; i++){
+            percorso += slash;
         }
-
-        const logoutButton = document.getElementById("btn-logout");
-        if (logoutButton) {
-            logoutButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../logout.php";
-                }else{
-                    window.location.href = "logout.php";
-                }
-            });
-        }
-
-        const registerButton = this.getElementById("btn-register");
-         if (registerButton) {
-            registerButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../sing_up.php";
-                }else{
-                    window.location.href = "sign_up.php";
-                }
-            });
-        }
-
-        const bookingButton = document.getElementById("btn-prenotazioni");
-        if (bookingButton) {
-            bookingButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../prenotazioni/index.php";
-
-                }else{
-                    window.location.href = "prenotazioni/index.php";
-                }
-            });
-        }
-
-        const ordiniButton = document.getElementById('btn-ordini');
-        if (ordiniButton) {
-            ordiniButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../ordini/index.php";
-
-                }else{
-                    window.location.href = "ordini/index.php";
-                }
-            });
-        }
-
-        const cartButton = document.getElementById('btn-carrello');
-        if (cartButton) {
-            cartButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../carrello/index.php";
-
-                }else{
-                    window.location.href = "carrello/index.php";
-                }
-            });
-        }
-
-        const profileButton = document.getElementById('btn-profile');
-        if (profileButton) {
-            profileButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../profilo/index.php";
-
-                }else{
-                    window.location.href = "profilo/index.php";
-                }
-            });
-        }
-
-        const payButton = document.getElementById('btn-pagamenti');
-        if (payButton) {
-            payButton.addEventListener('click', function () {
-                if(num_cart > 3 ){
-                    window.location.href = "../pagamenti.php";
-
-                }else{
-                    window.location.href = "pagamenti.php";
-                }
-            });
-        }
-
+        window.location.href = percorso + stringa;
     }
+
+    const btns = ["btn-homepage","btn-login","btn-logout","btn-register",
+                  "btn-prenotazioni","btn-ordini","btn-carrello",
+                  "btn-profile","btn-pagamenti"];
+
+    btns.forEach(id => {
+        const btn = document.getElementById(id);
+        if(btn){
+            btn.addEventListener('click', function(){
+                switch(id){
+                    case "btn-homepage": vaiAllaPagina("index.php"); break;
+                    case "btn-login": vaiAllaPagina("login"); break;
+                    case "btn-logout":
+                        if(num_cart === 4) window.location.href = "../logout.php";
+                        else if(num_cart === 5) window.location.href = "../../logout.php";
+                        else window.location.href = "logout.php";
+                        break;
+                    case "btn-register":
+                        if(num_cart > 3) window.location.href = "../sign_up.php";
+                        else window.location.href = "sign_up.php";
+                        break;
+                    case "btn-prenotazioni":
+                        if(num_cart === 4) window.location.href = "../prenotazioni/index.php";
+                        else if(num_cart === 5) window.location.href = "../../prenotazioni/index.php";
+                        else window.location.href = "prenotazioni/index.php";
+                        break;
+                    case "btn-ordini":
+                        if(num_cart > 3) window.location.href = "../ordini/index.php";
+                        else window.location.href = "ordini/index.php";
+                        break;
+                    case "btn-carrello":
+                        if(num_cart > 3) window.location.href = "../carrello/index.php";
+                        else window.location.href = "carrello/index.php";
+                        break;
+                    case "btn-profile":
+                        if(num_cart > 3) window.location.href = "../profilo/index.php";
+                        else window.location.href = "profilo/index.php";
+                        break;
+                    case "btn-pagamenti":
+                        if(num_cart > 3) window.location.href = "../pagamenti.php";
+                        else window.location.href = "pagamenti.php";
+                        break;
+                }
+            });
+        }
+    });
 });
 
-
 function contaCarattere(stringa, carattere) {
-  // Dividi la stringa in un array usando il carattere come separatore.
-  // Il numero di occorrenze sarà uguale alla lunghezza dell'array - 1.
   return stringa.split(carattere).length - 1;
 }

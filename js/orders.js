@@ -17,6 +17,7 @@ async function getOrders() {
         });
 
         const result = await response.json();
+        console.log(result);
 
         if (result.success && Array.isArray(result.data) && result.data.length) {
             renderOrdiniCards(result.data);
@@ -69,7 +70,7 @@ function renderOrdiniCards(ordini) {
                 </div>
 
                 <div class="card-footer bg-light d-flex justify-content-end gap-2 flex-wrap">
-                    ${generaAzioniOrdine(o.ID_ordine, o.stato_ordine, 'client')}
+                    ${generaAzioniOrdine(o.ordine.ID_ordine, o.stato_ordine, 'client')}
                 </div>
             </div>
         `;

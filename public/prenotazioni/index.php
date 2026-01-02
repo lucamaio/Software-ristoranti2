@@ -2,7 +2,7 @@
     require_once '../../includes/functions.php'; 
     session_start(); 
 
-    if(!isset($_SESSION['user_id'])){
+    if(!isset($_SESSION['user_id']) || ($_SESSION['role'] === 'chef')){
         message("Devi accedere per poter visualizzare questa pagina!");
     }
 ?>
@@ -21,6 +21,7 @@
     
     <link href="../../css/global.css"rel="stylesheet">
     <link href="../../css/prenotazioni.css" rel="stylesheet">
+    <link href="../../css/table.css" rel="stylesheet">
     <script>
         window.APP_CONFIG = {
             userId: <?= (int) $_SESSION['user_id'] ?>,
@@ -29,24 +30,15 @@
     </script>  
 
     <script src = "../../js/global.js"></script>
-    <script src="../../js/prenotazioni.js"></script>
+    <script src="../../js/prenotazioni/mostra.js"></script>
     <script src="../../js/navbar.js" ></script>
 
 </head>
 <body>
-    <?php 
-    if(!isset($_SESSION['user_id'])){
-        message("Devi accedere per poter visualizzare questa pagina");
-    }
-    if($_SESSION['role'] === 'chef'){
-        message("Accesso negato!");
-    }    
-    ?>
-    
-    <div class="hero-section mb-4 mx-3">
+    <div class="hero-section mb-0 mx-3">
         <div class="container">
             <h1 class="hero-title">Elenco prenotazioni</h1>
-            <p class="hero-description">Qui puoi visualizzare e gestire le tue prenotazioni. Inoltri, puoi effetuare una nuova Prenotazione.</p>
+            <p class="hero-description">Qui puoi visualizzare e gestire le tue prenotazioni. Inoltre, puoi effetuare una nuova Prenotazione.</p>
         </div>
     </div>
     <div class="bg-light mb-0 py-5">

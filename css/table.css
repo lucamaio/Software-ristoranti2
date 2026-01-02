@@ -1,0 +1,146 @@
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.card-header {
+    /* background: linear-gradient(45deg, #ecf0f1, #bdc3c7); */
+    color: #fff;
+    font-size: 1.25rem;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* Tabella responsive */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    margin-bottom: 0;
+    width: 100%;
+    table-layout: auto;
+}
+
+.table thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    padding: 15px 10px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.table tbody td {
+    padding: 15px 10px;
+    vertical-align: middle;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.table tbody tr:hover {
+    background: #f1f3f4;
+    transition: background 0.2s ease;
+}
+
+/* Colonne responsive: nascondi alcune su mobile */
+.col-mobile-hide {
+    display: table-cell;
+}
+
+@media (max-width: 768px) {
+    .col-mobile-hide {
+        display: none;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 8px 5px;
+        font-size: 0.85rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .card-header {
+        font-size: 1.1rem;
+        padding: 15px;
+    }
+}
+
+/* Pulsanti azioni */
+.btn-edit, .btn-cancel, .btn-accept, .btn-decline {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin: 2px;
+}
+
+@media (max-width: 768px) {
+    .btn-edit, .btn-cancel .btn-accept, .btn-decline {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.btn-edit {
+    color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-edit:hover {
+    background: #3498db;
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-cancel, .btn-decline {
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-cancel:hover, .btn-decline:hover {
+    background: #e74c3c;
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-accept{
+    color: #096c34;
+    border-color: #065026;
+}
+
+.btn-accept:hover{
+    background: #055d2b;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Icone FontAwesome */
+.fas {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .fas {
+        font-size: 1rem;
+    }
+}
+
+/* Animazioni generali */
+* {
+    transition: color 0.3s ease, background 0.3s ease;
+}

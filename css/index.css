@@ -1,42 +1,3 @@
-/* =========================================
-   STILE GLOBALE
-   ========================================= */
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
-    color: #333;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* spinge il footer in basso */
-}
-
-/* =========================================
-   HERO SECTION
-   ========================================= */
-.hero-section {
-    padding: 3rem 1rem;
-    background: #f8f9fa;
-    border-radius: 1rem;
-    text-align: center;
-}
-
-.hero-title {
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.hero-description {
-    max-width: 720px;
-    margin: 0 auto;
-    opacity: 0.9;
-}
 
 /* =========================================
    RISTORANTI CARD
@@ -79,51 +40,6 @@ html, body {
     border-radius: 10px;
     margin-bottom: 15px;
 }
-
-/* =========================================
-   MESSAGGI FLOATING
-   ========================================= */
-#message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    min-width: 250px;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #fff;
-    display: none;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-#message.success { background-color: #28a745; }
-#message.error { background-color: #dc3545; }
-
-#message.show {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#message.hide {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-
-/* =========================================
-   FOOTER
-   ========================================= */
-/* .footer-app {
-    background: #000080;
-    color: #fff;
-    padding: 2rem 1rem;
-    width: 100%;
-    text-align: center;
-} */
-
 /* =========================================
    RESPONSIVE
    ========================================= */

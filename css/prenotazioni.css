@@ -1,342 +1,86 @@
-/* Reset e base */
-/* * {
-    box-sizing: border-box;
-} */
+/* =========================
+   FORM PRENOTAZIONE
+   ========================= */
 
-/* body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    color: #333;
-} */
-
-/* Responsive padding */
-/* @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-} */
-
-/* Titolo */
-/* h1, h2 {
-    font-weight: 700;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-} */
-
-/* @media (max-width: 768px) {
-    h1, h2 {
-        font-size: 2rem;
-    }
-} */
-
-/* Form prenotazione */
-#form-prenotazione {
-    max-width: 600px;
+.prenotazione-form {
+    max-width: 640px;
+    width: 100%;
     margin: 0 auto;
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border: none;
-}
-
-@media (max-width: 768px) {
-    #form-prenotazione {
-        padding: 20px;
-        margin: 10px;
-    }
+    background: #ffffff;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* Gruppi di campi */
-#form-prenotazione div {
-    margin-bottom: 20px;
-}
-
-@media (max-width: 768px) {
-    #form-prenotazione div {
-        margin-bottom: 15px;
-    }
+.prenotazione-group {
+    margin-bottom: clamp(0.75rem, 2.5vw, 1.25rem);
 }
 
 /* Label */
-#form-prenotazione label {
+.prenotazione-form label {
     display: block;
     font-weight: 600;
     color: #2c3e50;
-    margin-bottom: 8px;
-    font-size: 1rem;
+    margin-bottom: 0.4rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
-/* Input, Select */
-#form-prenotazione input, #form-prenotazione select {
+/* Input e Select */
+.prenotazione-form input,
+.prenotazione-form select {
     width: 100%;
-    padding: 12px 15px;
+    padding: clamp(0.6rem, 2vw, 0.85rem) clamp(0.75rem, 2.5vw, 1rem);
     border: 2px solid #ddd;
-    border-radius: 10px;
-    font-size: 1rem;
+    border-radius: 0.75rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     background: #f9f9f9;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#form-prenotazione input:focus, #form-prenotazione select:focus {
+/* Focus */
+.prenotazione-form input:focus,
+.prenotazione-form select:focus {
     border-color: #3498db;
-    background: white;
-    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+    background: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
     outline: none;
 }
 
-@media (max-width: 768px) {
-    #form-prenotazione input, #form-prenotazione select {
-        padding: 10px 12px;
-        font-size: 0.95rem;
-    }
-}
-
 /* Pulsante submit */
-#form-prenotazione button {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-    border: none;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 50px;
+.prenotazione-submit {
+    width: 100%;
+    margin-top: 1.2rem;
+    padding: clamp(0.75rem, 3vw, 1rem);
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
     font-weight: 600;
-    font-size: 1.1rem;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5rem;
+    background: linear-gradient(45deg, #000080, #2525e1);
     cursor: pointer;
-    transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-    width: 100%;
-    display: block;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-#form-prenotazione button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-    background: linear-gradient(45deg, #2980b9, #3498db);
-}
-
-@media (max-width: 768px) {
-    #form-prenotazione button {
-        padding: 12px 20px;
-        font-size: 1rem;
+/* Hover desktop */
+@media (hover: hover) {
+    .prenotazione-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
     }
 }
 
-/* Pulsante Nuova Prenotazione (se presente) */
-/* #btn-prenota {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-    display: block;
-    margin: 0 auto 20px auto;
-}
-
-#btn-prenota:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-    background: linear-gradient(45deg, #2980b9, #3498db);
-}
-
-@media (max-width: 768px) {
-    #btn-prenota {
-        width: 100%;
-        padding: 15px;
-    }
-} */
-
-/* Card per la tabella (se presente) */
-.card {
-    border: none;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    background: white;
-}
-
-.card-header {
-    /* background: linear-gradient(45deg, #ecf0f1, #bdc3c7); */
-    color: #fff;
-    font-size: 1.25rem;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-}
-
-.card-body {
-    padding: 0;
-}
-
-/* Tabella responsive */
-.table-responsive {
-    overflow-x: auto;
-}
-
-.table {
-    margin-bottom: 0;
-    width: 100%;
-    table-layout: auto;
-}
-
-.table thead th {
-    background: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    border-bottom: 2px solid #dee2e6;
-    padding: 15px 10px;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.table tbody td {
-    padding: 15px 10px;
-    vertical-align: middle;
-    text-align: center;
-    word-wrap: break-word;
-}
-
-.table tbody tr:hover {
-    background: #f1f3f4;
-    transition: background 0.2s ease;
-}
-
-/* Colonne responsive: nascondi alcune su mobile */
-.col-mobile-hide {
-    display: table-cell;
-}
-
-@media (max-width: 768px) {
-    .col-mobile-hide {
-        display: none;
-    }
-    
-    .table thead th,
-    .table tbody td {
-        padding: 8px 5px;
-        font-size: 0.85rem;
-    }
-    
-    .table-responsive {
-        font-size: 0.9rem;
-    }
-    
-    .card-header {
-        font-size: 1.1rem;
-        padding: 15px;
+/* Touch device */
+@media (hover: none) {
+    .prenotazione-submit:active {
+        transform: scale(0.97);
     }
 }
 
-/* Pulsanti azioni */
-.btn-edit, .btn-cancel, .btn-accept, .btn-decline {
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    margin: 2px;
-}
-
-@media (max-width: 768px) {
-    .btn-edit, .btn-cancel .btn-accept, .btn-decline {
-        width: 30px;
-        height: 30px;
+/* Extra small devices */
+@media (max-width: 360px) {
+    .prenotazione-form {
+        border-radius: 0.75rem;
     }
-}
-
-.btn-edit {
-    color: #3498db;
-    border-color: #3498db;
-}
-
-.btn-edit:hover {
-    background: #3498db;
-    color: white;
-    transform: scale(1.1);
-}
-
-.btn-cancel, .btn-decline {
-    color: #e74c3c;
-    border-color: #e74c3c;
-}
-
-.btn-cancel:hover, .btn-decline:hover {
-    background: #e74c3c;
-    color: white;
-    transform: scale(1.1);
-}
-
-.btn-accept{
-    color: #096c34;
-    border-color: #065026;
-}
-
-.btn-accept:hover{
-    background: #055d2b;
-    color: white;
-    transform: scale(1.1);
-}
-
-/* Messaggi */
-#message {
-    display: none;
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: 500;
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.4s ease;
-}
-
-#message.show {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#message.hide {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* Icone FontAwesome */
-.fas {
-    font-size: 1.1rem;
-}
-
-@media (max-width: 768px) {
-    .fas {
-        font-size: 1rem;
-    }
-}
-
-/* Animazioni generali */
-* {
-    transition: color 0.3s ease, background 0.3s ease;
 }

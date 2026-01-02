@@ -52,6 +52,22 @@ switch ($azione) {
         
         genera_ordine($link, $_SESSION['user_id']);
         break;
+    case 'get-dettagli':
+        if(!isset($_POST['ID_ordine'])) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'ID_ordine mancante']);
+            exit;
+        }
+
+        if($role !== 'client') {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Solo i clienti possono effettuare ordini']);
+            exit;
+        }
+        $ID_ordine = $_POST['ID_ordine'];
+
+        ricavaDettagliOrdine($link, $ID_ordine, $user_id, $role);
+        break;
     default:
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Azione non riconosciuta']);
@@ -221,5 +237,95 @@ function genera_ordine($link, $user_id) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
     
+    exit;
+}
+
+function ricavaDettagliOrdine($link, $ID_ordine, $user_id, $role) {
+    // Preparo la query in base al ruolo
+    if($role === 'client'){
+        $query = "
+            SELECT o.*, r.nome AS nome_ristorante, so.nome AS stato_ordine,
+                dc.quantita, p.nome AS nome_piatto, p.prezzo
+            FROM ordini o
+            LEFT JOIN ristoranti r ON r.ID_ristorante = o.ID_ristorante
+            LEFT JOIN stati_ordini so ON o.ID_stato_ordine = so.ID_stato_ordine
+            LEFT JOIN dettagli_carrelli dc ON dc.ID_carrello = o.ID_carrello
+            LEFT JOIN piatti p ON p.ID_piatto = dc.ID_piatto
+            WHERE o.ID_ordine = ? AND o.ID_cliente = ?";
+        $stmt = mysqli_prepare($link, $query);
+        mysqli_stmt_bind_param($stmt, 'ii', $ID_ordine, $user_id);
+    }else if($role === 'ristorator'){
+        $query = "
+            SELECT o.*, r.nome AS nome_ristorante, so.nome AS stato_ordine,
+                dc.quantita, p.nome AS nome_piatto, p.prezzo
+            FROM ordini o
+            LEFT JOIN ristoranti r ON r.ID_ristorante = o.ID_ristorante
+            LEFT JOIN stati_ordini so ON o.ID_stato_ordine = so.ID_stato_ordine
+            LEFT JOIN dettagli_carrelli dc ON dc.ID_carrello = o.ID_carrello
+            LEFT JOIN piatti p ON p.ID_piatto = dc.ID_piatto
+            WHERE o.ID_ordine = ? AND r.ID_ristoratore = ?";
+        $stmt = mysqli_prepare($link, $query);
+        mysqli_stmt_bind_param($stmt, 'ii', $ID_ordine, $user_id);
+    } else if($role === 'chef'){
+        http_response_code(403);
+        echo json_encode(['success' => false, 'error' => 'Funzionalità non ancora implementata']);
+        exit;
+    }else if($role === 'admin'){
+        $query = "
+            SELECT o.*, r.nome AS nome_ristorante, so.nome AS stato_ordine,
+                dc.quantita, p.nome AS nome_piatto, p.prezzo
+            FROM ordini o
+            LEFT JOIN ristoranti r ON r.ID_ristorante = o.ID_ristorante
+            LEFT JOIN stati_ordini so ON o.ID_stato_ordine = so.ID_stato_ordine
+            LEFT JOIN dettagli_carrelli dc ON dc.ID_carrello = o.ID_carrello
+            LEFT JOIN piatti p ON p.ID_piatto = dc.ID_piatto
+            WHERE o.ID_ordine = ?";
+        $stmt = mysqli_prepare($link, $query);
+        mysqli_stmt_bind_param($stmt, 'i', $ID_ordine);
+    }else {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'error' => 'Ruolo non autorizzato']);
+        exit;
+    }
+   
+    // Eseguo la query e ottengo i risultati
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Controllo se l'ordine esiste
+    if(mysqli_num_rows($result) === 0) {
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Ordine non trovato']);
+        exit;
+    }
+    // Preparo la risposta
+    $dettagli = [];
+    $ordine_info = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Controllo autorizzazione
+        if ($role === 'client' && $row['ID_cliente'] != $user_id) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Accesso non autorizzato all\'ordine']);
+            exit;
+        }
+
+        $dettagli[] = [
+            'quantita' => $row['quantita'],
+            'nome_piatto' => $row['nome_piatto'],
+            'prezzo' => $row['prezzo']
+        ];
+        if(!isset($ordine_info['ID_ordine']) || empty($ordine_info['ID_ordine'])) {
+            $ordine_info = [
+            'ID_ordine' => $row['ID_ordine'],
+            'ID_cliente' => $row['ID_cliente'],
+            'ID_ristorante' => $row['ID_ristorante'],
+            'nome_ristorante' => $row['nome_ristorante'],
+            'stato_ordine' => $row['stato_ordine'],
+            'data_ordine' => $row['data_ordine']
+        ];
+        }
+    }
+
+    echo json_encode(['success' => true, 'ordine' => array_values($ordine_info), 'dettagli' => array_values($dettagli)]);
     exit;
 }

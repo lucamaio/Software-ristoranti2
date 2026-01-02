@@ -36,14 +36,24 @@ async function caricaPrenotazioni() {
     const url = "../../api/prenotazioni.php";
     try {
         const response = await fetch(url, {
-            method: "GET"
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                azione: "ricava_prenotazioni"
+            })
         });
 
         const result = await response.json();
         // console.log(result);
-        mostraPrenotazioni(result.data);
+
+        if(result.success){
+            mostraPrenotazioni(result.data);
+        }else{
+            console.log("Errore durante l'interogazione del api");
+        }
+       
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         
     }
 }
@@ -219,30 +229,6 @@ async function caricaSelectTavolo(ID_prenotazione, ID_ristorante){
 
 }
 
-// Funzione 5: Mostra un messaggio
-
-function mostraMessaggio(testo, tipo='success') {
-    const messageDiv = document.getElementById('message');
-    messageDiv.style.display = 'block';
-    messageDiv.textContent = testo;
-    
-    // Rimuovo eventuali classi precedenti
-    messageDiv.className = '';
-    
-    // Aggiungo tipo e animazione
-    messageDiv.classList.add(tipo, 'show');
-    
-    // Nascondo automaticamente dopo 3 secondi
-    setTimeout(() => {
-        messageDiv.classList.add('hide');
-        // Dopo la transizione, rimuovo tutto
-        setTimeout(() => {
-            messageDiv.className = '';
-            messageDiv.style.display = 'none';
-        }, 400);
-    }, 3000);
-}
-
 /*
     -------------------------
         SEZIONE AZIONI
@@ -258,7 +244,7 @@ async function accettaPrenotazione(id){
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ 
-                request_type: "accetta",
+                azione: "accetta_prenotazione",
                 ID_prenotazione: id
             })
         });
@@ -288,7 +274,7 @@ async function cancellaPrenotazione(id) {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ 
-                request_type: "cancella",
+                azione: "cancella_prenotazione",
                 ID_prenotazione: id
             })
         });
@@ -317,7 +303,7 @@ async function declinaPrenotazione(id){
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ 
-                request_type: "declina",
+                azione: "declina_prenotazione",
                 ID_prenotazione: id
             })
         });
@@ -353,7 +339,7 @@ async function setTavolo(ID_prenotazione, ID_tavolo) {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({
-                request_type: "set",
+                azione: "imposta_tavolo",
                 ID_prenotazione: ID_prenotazione,
                 ID_tavolo: ID_tavolo
             })
